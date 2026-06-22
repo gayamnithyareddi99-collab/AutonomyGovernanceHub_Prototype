@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AutonomyGovernanceHub | Runtime Trust for Autonomous Enterprise AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --dv1:#0e0618;--dv2:#160b2e;--dv3:#1e1040;
+  --dvb:rgba(139,92,246,.18);--dvb2:rgba(139,92,246,.32);
+  --dvt:#e2d9f3;--dvt2:#b8a9d9;--dvt3:#7c6baa;
+  --lbg:#faf8ff;--lbg2:#f3eeff;--lbg3:#ebe3ff;
+  --lc:#ffffff;--lb:rgba(109,40,217,.1);--lb2:rgba(109,40,217,.2);
+  --lt1:#1e0a3c;--lt2:#3b1d6e;--lt3:#6b5ca5;--lt4:#a895c8;
+  --v3:#6d28d9;--v4:#7c3aed;--v5:#8b5cf6;--v6:#a78bfa;
+  --p1:#9333ea;--p2:#a855f7;--p4:#e879f9;
+  --t1:#0d9488;--t2:#14b8a6;--t3:#2dd4bf;
+  --ok:#059669;--okl:rgba(5,150,105,.1);--okb:rgba(5,150,105,.28);
+  --wn:#d97706;--wnl:rgba(217,119,6,.1);--wnb:rgba(217,119,6,.28);
+  --rd:#dc2626;--rdl:rgba(220,38,38,.1);--rdb:rgba(220,38,38,.28);
+  --shlm:0 6px 28px rgba(109,40,217,.18);--shdm:0 8px 40px rgba(76,29,149,.38);
+  --gv:0 0 24px rgba(139,92,246,.45);
+  --r:10px;--rl:14px;--rxl:20px;--sw:266px;
+  --fh:"Fraunces",serif;--fb:"Plus Jakarta Sans",sans-serif;--fm:"Space Mono",monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);background:var(--lbg);color:var(--lt1);overflow-x:hidden;line-height:1.65}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--lbg2)}::-webkit-scrollbar-thumb{background:rgba(109,40,217,.3);border-radius:4px}
+h1,h2,h3{font-family:var(--fh);line-height:1.18;letter-spacing:-.02em}
+h1{font-size:clamp(1.5rem,2.3vw,2.5rem);font-weight:700}
+h3{font-size:clamp(.88rem,1vw,1.04rem);font-weight:700}
+p{color:var(--lt3);line-height:1.82;font-size:.875rem}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:var(--fb)}
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sw);background:linear-gradient(180deg,var(--dv1) 0%,var(--dv2) 50%,var(--dv1) 100%);display:flex;flex-direction:column;z-index:500;border-right:1px solid var(--dvb);overflow-y:auto;overflow-x:hidden}
+.sidebar::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2))}
+.sidebar::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(109,40,217,.14),transparent 60%);pointer-events:none}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:rgba(139,92,246,.2)}
+.sb-brand{padding:18px 14px 12px;border-bottom:1px solid var(--dvb);flex-shrink:0;position:relative;z-index:1}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sb-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--v3),var(--p1));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--gv)}
+.sb-icon svg{width:19px;height:19px;color:#fff}
+.sb-name{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--dvt);line-height:1.25}
+.sb-name em{background:linear-gradient(90deg,var(--v6),var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;font-weight:900}
+.sb-tag{font-family:var(--fm);font-size:.3rem;color:var(--dvt3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px;margin-left:50px}
+.sb-live{display:flex;align-items:center;gap:7px;padding:5px 14px;background:rgba(139,92,246,.06);border-bottom:1px solid var(--dvb);flex-shrink:0;position:relative;z-index:1}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:var(--t2);box-shadow:0 0 10px rgba(20,184,166,.6);animation:pulse 2.2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(20,184,166,.5)}50%{box-shadow:0 0 0 6px rgba(20,184,166,0)}}
+.sb-live-txt{font-family:var(--fm);font-size:.36rem;color:var(--dvt2);letter-spacing:.1em;text-transform:uppercase}
+.sb-nav{flex:1;padding:8px;position:relative;z-index:1}
+.sb-grp{margin-bottom:2px}
+.sb-glbl{font-family:var(--fm);font-size:.3rem;letter-spacing:.26em;color:var(--dvt3);text-transform:uppercase;padding:10px 8px 4px;display:flex;align-items:center;gap:7px}
+.sb-glbl::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(139,92,246,.2),transparent)}
+.sb-item{display:flex;align-items:center;gap:8px;width:100%;padding:7px 9px;border-radius:var(--r);background:none;border:1px solid transparent;color:var(--dvt2);font-family:var(--fb);font-size:.71rem;font-weight:600;cursor:pointer;text-align:left;transition:all .2s;margin-bottom:1px;min-height:34px;position:relative}
+.sb-item:hover{color:var(--dvt);background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.22)}
+.sb-item.active{background:linear-gradient(135deg,rgba(109,40,217,.25),rgba(168,85,247,.15));border-color:rgba(139,92,246,.42);color:#fff}
+.sb-item.active::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:linear-gradient(180deg,var(--v4),var(--p2));border-radius:0 3px 3px 0}
+.sb-ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-item.active .sb-ic{background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.36)}
+.sb-ic svg{width:12px;height:12px}
+.sb-chip{padding:2px 7px;border-radius:20px;font-family:var(--fm);font-size:.34rem;font-weight:700;background:rgba(139,92,246,.14);color:var(--v6);border:1px solid rgba(139,92,246,.28);flex-shrink:0;margin-left:auto}
+.sb-chip.n{background:rgba(20,184,166,.14);color:var(--t3);border-color:rgba(20,184,166,.3)}
+.sb-foot{padding:12px;border-top:1px solid var(--dvb);flex-shrink:0;background:rgba(0,0,0,.2);position:relative;z-index:1}
+.sb-cta{width:100%;padding:10px 14px;border-radius:var(--rl);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.77rem;font-weight:700;cursor:pointer;border:none;box-shadow:var(--gv);transition:all .22s}
+.sb-cta:hover{transform:translateY(-2px);box-shadow:var(--shdm)}
+.sb-fdr{font-family:var(--fm);font-size:.36rem;color:var(--dvt3);text-align:center;margin-top:7px}
+/* MOBILE */
+.mtop{display:none;position:fixed;top:0;left:0;right:0;z-index:580;background:var(--dv1);border-bottom:1px solid var(--dvb);height:54px;align-items:center;justify-content:space-between;padding:0 15px}
+.mtop::before{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2))}
+.mb-nm{font-family:var(--fh);font-size:.75rem;font-weight:700;color:var(--dvt)}
+.mb-nm em{background:linear-gradient(90deg,var(--v6),var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.mb-pg{font-family:var(--fm);font-size:.34rem;color:var(--dvt3);margin-top:2px}
+.mr{display:flex;align-items:center;gap:7px}
+.mlive{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.3);font-family:var(--fm);font-size:.35rem;color:var(--t3)}
+.mhbg{width:30px;height:30px;border-radius:8px;border:1px solid var(--dvb);background:rgba(139,92,246,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer}
+.mhbg span{display:block;width:13px;height:1.5px;background:var(--dvt);border-radius:2px;transition:all .3s}
+.mhbg.open span:first-child{transform:rotate(45deg) translate(4px,4px)}
+.mhbg.open span:nth-child(2){opacity:0}
+.mhbg.open span:last-child{transform:rotate(-45deg) translate(4px,-4px)}
+.drov{position:fixed;inset:0;z-index:610;display:none}
+.drov.open{display:block;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+.dr{position:fixed;top:0;left:0;bottom:0;z-index:620;width:min(280px,90vw);background:linear-gradient(160deg,var(--dv1),var(--dv2));border-right:1px solid var(--dvb);display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .35s cubic-bezier(.32,.72,0,1);overflow-y:auto}
+.dr.open{transform:none}
+.dr::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2))}
+.dr-head{display:flex;align-items:center;justify-content:space-between;padding:15px 14px 11px;border-bottom:1px solid var(--dvb);flex-shrink:0}
+.dr-nm{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--dvt)}
+.dr-nm em{background:linear-gradient(90deg,var(--v6),var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.dr-x{color:var(--dvt3);font-size:.9rem;cursor:pointer;padding:4px;line-height:1}
+.dr-nav{flex:1;padding:7px}
+.dr-gl{font-family:var(--fm);font-size:.3rem;letter-spacing:.24em;color:var(--dvt3);text-transform:uppercase;padding:9px 8px 4px}
+.dr-item{display:flex;align-items:center;gap:8px;width:100%;padding:7px 9px;border-radius:var(--r);background:none;border:1px solid transparent;color:var(--dvt2);font-family:var(--fb);font-size:.71rem;font-weight:600;cursor:pointer;text-align:left;transition:all .2s;margin-bottom:1px}
+.dr-item:hover{color:var(--dvt);background:rgba(139,92,246,.1)}
+.dr-item.active{background:rgba(109,40,217,.22);border-color:rgba(139,92,246,.4);color:#fff}
+.dr-ic{width:23px;height:23px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dr-ic svg{width:11px;height:11px}
+.dr-foot{padding:10px;border-top:1px solid var(--dvb);flex-shrink:0}
+.dr-cta{width:100%;padding:9px;border-radius:var(--rl);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.75rem;font-weight:700;border:none;cursor:pointer}
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column}
+.mi{flex:1;padding:26px 30px;background:var(--lbg)}
+.page{display:none;animation:fadeup .35s ease}
+.page.active{display:block}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ain{opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
+.ain.v{opacity:1;transform:none}
+/* SECTION HEADER */
+.sh{margin-bottom:24px}
+.sh-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.sbadge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:20px;background:rgba(109,40,217,.09);border:1px solid rgba(109,40,217,.22);font-family:var(--fm);font-size:.38rem;font-weight:700;color:var(--v3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.sbadge.t{background:rgba(13,148,136,.09);border-color:rgba(13,148,136,.22);color:var(--t1)}
+.sbadge.p{background:rgba(192,38,211,.09);border-color:rgba(192,38,211,.22);color:#c026d3}
+.sbadge.ok{background:var(--okl);border-color:var(--okb);color:var(--ok)}
+.sbadge.wn{background:var(--wnl);border-color:var(--wnb);color:var(--wn)}
+.sbadge.rd{background:var(--rdl);border-color:var(--rdb);color:var(--rd)}
+.stitle{font-size:clamp(1.1rem,1.85vw,1.75rem);font-weight:700;color:var(--lt1);line-height:1.18;margin-bottom:7px}
+.ssub{font-size:.83rem;color:var(--lt3);line-height:1.8;max-width:700px}
+.sa{display:flex;gap:9px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.bp{padding:9px 18px;border-radius:var(--rl);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.76rem;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(109,40,217,.3);transition:all .22s}
+.bp:hover{transform:translateY(-2px);box-shadow:var(--shdm)}
+/* CARDS - Light Violet */
+.card{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:20px;transition:all .26s;position:relative;overflow:hidden}
+.card:hover{box-shadow:var(--shlm);transform:translateY(-3px);border-color:rgba(109,40,217,.2)}
+.card-dk{background:linear-gradient(135deg,var(--dv2),var(--dv3));border:1px solid var(--dvb2)}
+.card-dk h3{color:#fff}.card-dk p{color:var(--dvt2)}
+.card h3{color:var(--lt1);margin-bottom:6px}
+.card p{font-size:.79rem;line-height:1.76}
+.card-v::before,.card-p::before,.card-t::before,.card-ok::before,.card-wn::before,.card-rd::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+.card-v::before{background:linear-gradient(90deg,var(--v3),var(--v6))}
+.card-p::before{background:linear-gradient(90deg,var(--p1),var(--p4))}
+.card-t::before{background:linear-gradient(90deg,var(--t1),var(--t3))}
+.card-ok::before{background:linear-gradient(90deg,var(--ok),#34d399)}
+.card-wn::before{background:linear-gradient(90deg,var(--wn),#fbbf24)}
+.card-rd::before{background:linear-gradient(90deg,var(--rd),#f87171)}
+/* ICONS */
+.cic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;flex-shrink:0}
+.cic.v{background:rgba(109,40,217,.1);border:1px solid rgba(109,40,217,.22);color:var(--v3)}
+.cic.p{background:rgba(192,38,211,.1);border:1px solid rgba(192,38,211,.22);color:#c026d3}
+.cic.t{background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.22);color:var(--t1)}
+.cic.ok{background:var(--okl);border:1px solid var(--okb);color:var(--ok)}
+.cic.wn{background:var(--wnl);border:1px solid var(--wnb);color:var(--wn)}
+.cic.rd{background:var(--rdl);border:1px solid var(--rdb);color:var(--rd)}
+.cic svg{width:18px;height:18px}
+/* STAT CARDS */
+.sc{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:20px;text-align:center;position:relative;overflow:hidden;transition:all .26s}
+.sc:hover{box-shadow:var(--shlm);transform:translateY(-4px)}
+.sc::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px}
+.sc.v::after{background:linear-gradient(90deg,transparent,var(--v3),var(--v6),transparent)}
+.sc.p::after{background:linear-gradient(90deg,transparent,var(--p1),var(--p4),transparent)}
+.sc.t::after{background:linear-gradient(90deg,transparent,var(--t1),var(--t3),transparent)}
+.sc.ok::after{background:linear-gradient(90deg,transparent,var(--ok),#34d399,transparent)}
+.sc.wn::after{background:linear-gradient(90deg,transparent,var(--wn),#fbbf24,transparent)}
+.sc.rd::after{background:linear-gradient(90deg,transparent,var(--rd),#f87171,transparent)}
+.sv{font-family:var(--fh);font-size:clamp(1.4rem,2.3vw,2.2rem);font-weight:900;line-height:1;margin-bottom:5px;letter-spacing:-.04em}
+.sv.v{background:linear-gradient(135deg,#5b21b6,var(--v6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sv.p{background:linear-gradient(135deg,var(--p1),var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sv.t{background:linear-gradient(135deg,var(--t1),#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sv.ok{background:linear-gradient(135deg,var(--ok),#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sv.wn{background:linear-gradient(135deg,var(--wn),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sv.rd{background:linear-gradient(135deg,var(--rd),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sd{font-size:.71rem;color:var(--lt3);line-height:1.55;font-weight:500}
+.sn{font-size:.52rem;color:var(--lt4);font-family:var(--fm);margin-top:4px}
+/* GRIDS */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g32{display:grid;grid-template-columns:3fr 2fr;gap:18px}
+/* CHART PANELS */
+.cp{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:18px;position:relative;overflow:hidden}
+.cp::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v4),var(--p2),var(--t2))}
+.cp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap;padding-top:4px}
+.cp-t{font-family:var(--fh);font-size:.86rem;font-weight:700;color:var(--lt1)}
+.cw{position:relative;height:180px}.cw.t{height:240px}
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-family:var(--fm);font-size:.44rem;font-weight:700;white-space:nowrap}
+.bdg.ok{background:var(--okl);color:var(--ok);border:1px solid var(--okb)}
+.bdg.wn{background:var(--wnl);color:var(--wn);border:1px solid var(--wnb)}
+.bdg.rd{background:var(--rdl);color:var(--rd);border:1px solid var(--rdb)}
+.bdg.v{background:rgba(109,40,217,.1);color:var(--v3);border:1px solid rgba(109,40,217,.24)}
+.bdg.p{background:rgba(192,38,211,.1);color:#c026d3;border:1px solid rgba(192,38,211,.24)}
+.bdg.t{background:rgba(13,148,136,.1);color:var(--t1);border:1px solid rgba(13,148,136,.24)}
+/* PROGRESS */
+.pi{margin-bottom:11px}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pl{font-size:.71rem;color:var(--lt2);font-weight:600}
+.pp{font-size:.62rem;font-family:var(--fm);font-weight:700}
+.pt{height:7px;background:var(--lbg3);border-radius:4px;overflow:hidden}
+.pf{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.pf::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shim 2.4s ease-in-out infinite}
+@keyframes shim{0%{transform:translateX(-200%)}100%{transform:translateX(300%)}}
+.pf.v{background:linear-gradient(90deg,#5b21b6,var(--v5))}
+.pf.p{background:linear-gradient(90deg,var(--p1),var(--p4))}
+.pf.t{background:linear-gradient(90deg,var(--t1),var(--t3))}
+.pf.g{background:linear-gradient(90deg,#065f46,#34d399)}
+.pf.w{background:linear-gradient(90deg,#b45309,var(--wn))}
+/* ACTIVITY */
+.af{display:flex;flex-direction:column;gap:6px}
+.ai-item{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--lc);border:1px solid var(--lb);border-radius:var(--r);transition:all .22s}
+.ai-item:hover{border-color:rgba(109,40,217,.24);background:var(--lbg2);transform:translateX(2px)}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.adot.v{background:var(--v4)}.adot.p{background:var(--p2)}.adot.t{background:var(--t2)}
+.adot.ok{background:var(--ok)}.adot.wn{background:var(--wn)}.adot.rd{background:var(--rd)}
+.am{font-size:.72rem;color:var(--lt2);font-weight:600;margin-bottom:2px;line-height:1.45}
+.at{font-size:.56rem;color:var(--lt4);font-family:var(--fm)}
+/* HERO - Dark Violet */
+.hero{background:linear-gradient(135deg,var(--dv1) 0%,var(--dv2) 45%,var(--dv3) 75%,#2e1050 100%);border-radius:var(--rxl);padding:40px 46px;position:relative;overflow:hidden;margin-bottom:20px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 40%,rgba(139,92,246,.2),transparent 65%),radial-gradient(ellipse 50% 60% at 10% 90%,rgba(20,184,166,.12),transparent 60%)}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2),var(--p4))}
+.hero-orb{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.13),transparent 70%);pointer-events:none}
+.hero-c{position:relative;z-index:2;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:4px 13px;border-radius:20px;background:rgba(139,92,246,.16);border:1px solid rgba(139,92,246,.38);font-family:var(--fm);font-size:.37rem;font-weight:600;color:var(--v6);letter-spacing:.13em;text-transform:uppercase;margin-bottom:13px}
+.hero-title{font-family:var(--fh);font-size:clamp(1.4rem,2.7vw,2.5rem);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.02em;margin-bottom:12px}
+.hero-title span{background:linear-gradient(90deg,var(--v6),var(--p4),var(--t3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.68);line-height:1.84;margin-bottom:22px;max-width:590px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:22px}
+.hsvl{font-family:var(--fh);font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1}
+.hsll{font-family:var(--fm);font-size:.4rem;color:rgba(255,255,255,.44);margin-top:3px;letter-spacing:.07em}
+.hero-btns{display:flex;gap:11px;flex-wrap:wrap}
+.hbp{padding:11px 24px;border-radius:var(--rl);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.8rem;font-weight:700;border:none;cursor:pointer;box-shadow:var(--gv);transition:all .22s}
+.hbp:hover{transform:translateY(-2px);box-shadow:var(--shdm)}
+.hbs{padding:10px 22px;border-radius:var(--rl);background:rgba(255,255,255,.08);color:#fff;font-family:var(--fh);font-size:.8rem;font-weight:700;border:1.5px solid rgba(255,255,255,.22);cursor:pointer;transition:all .22s}
+.hbs:hover{background:rgba(255,255,255,.15)}
+/* KPI - Light Violet */
+.kpi{background:linear-gradient(135deg,var(--lbg2),var(--lbg3));border:1px solid var(--lb2);border-radius:var(--rxl);padding:18px 24px;position:relative;overflow:hidden;margin-bottom:18px}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2))}
+.kpi-lbl{font-family:var(--fm);font-size:.38rem;font-weight:700;color:var(--lt4);text-transform:uppercase;letter-spacing:.2em;margin-bottom:12px}
+.kpi-g{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.kpi-i{text-align:center;padding:12px 8px;background:var(--lc);border-radius:var(--r);border:1px solid var(--lb)}
+.kpi-v{font-family:var(--fh);font-size:1.25rem;font-weight:900;line-height:1;letter-spacing:-.04em;margin-bottom:3px}
+.kpi-l{font-family:var(--fm);font-size:.38rem;color:var(--lt4);letter-spacing:.04em}
+/* SWOT */
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:var(--rl);overflow:hidden;border:1px solid var(--lb)}
+.sw-q{padding:20px}
+.sw-q:nth-child(1){background:linear-gradient(135deg,rgba(5,150,105,.06),rgba(5,150,105,.02));border-right:1px solid var(--lb);border-bottom:1px solid var(--lb)}
+.sw-q:nth-child(2){background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border-bottom:1px solid var(--lb)}
+.sw-q:nth-child(3){background:linear-gradient(135deg,rgba(109,40,217,.06),rgba(109,40,217,.02));border-right:1px solid var(--lb)}
+.sw-q:nth-child(4){background:linear-gradient(135deg,rgba(217,119,6,.06),rgba(217,119,6,.02))}
+.sw-label{font-family:var(--fm);font-size:.36rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;margin-bottom:10px}
+.sw-q:nth-child(1) .sw-label{color:var(--ok)}.sw-q:nth-child(2) .sw-label{color:var(--rd)}
+.sw-q:nth-child(3) .sw-label{color:var(--v3)}.sw-q:nth-child(4) .sw-label{color:var(--wn)}
+.sw-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.sw-list li{font-size:.73rem;color:var(--lt2);line-height:1.5;display:flex;align-items:flex-start;gap:7px}
+.sw-list li::before{content:"";width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.sw-q:nth-child(1) .sw-list li::before{background:var(--ok)}.sw-q:nth-child(2) .sw-list li::before{background:var(--rd)}
+.sw-q:nth-child(3) .sw-list li::before{background:var(--v3)}.sw-q:nth-child(4) .sw-list li::before{background:var(--wn)}
+/* FEATURE GRID */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat-card{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:20px;transition:all .26s;position:relative;overflow:hidden}
+.feat-card:hover{box-shadow:var(--shlm);transform:translateY(-3px)}
+.feat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.feat-card.cv::before{background:linear-gradient(90deg,var(--v3),var(--v6))}
+.feat-card.cp::before{background:linear-gradient(90deg,var(--p1),var(--p4))}
+.feat-card.ct::before{background:linear-gradient(90deg,var(--t1),var(--t3))}
+.feat-card.cr::before{background:linear-gradient(90deg,var(--rd),#f87171)}
+.feat-card.cw::before{background:linear-gradient(90deg,var(--wn),#fbbf24)}
+.feat-card.cg::before{background:linear-gradient(90deg,var(--ok),#34d399)}
+.feat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:13px}
+.feat-icon svg{width:19px;height:19px}
+.feat-card.cv .feat-icon{background:rgba(109,40,217,.1);border:1px solid rgba(109,40,217,.2);color:var(--v3)}
+.feat-card.cp .feat-icon{background:rgba(192,38,211,.1);border:1px solid rgba(192,38,211,.2);color:#c026d3}
+.feat-card.ct .feat-icon{background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.2);color:var(--t1)}
+.feat-card.cr .feat-icon{background:var(--rdl);border:1px solid var(--rdb);color:var(--rd)}
+.feat-card.cw .feat-icon{background:var(--wnl);border:1px solid var(--wnb);color:var(--wn)}
+.feat-card.cg .feat-icon{background:var(--okl);border:1px solid var(--okb);color:var(--ok)}
+.feat-title{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--lt1);margin-bottom:6px}
+.feat-text{font-size:.74rem;color:var(--lt3);line-height:1.74}
+/* TIMELINE */
+.tl{display:flex;flex-direction:column;position:relative}
+.tl::before{content:"";position:absolute;left:18px;top:22px;bottom:22px;width:2px;background:linear-gradient(180deg,var(--v3),var(--p2),var(--t2))}
+.tl-item{display:flex;gap:18px;padding:0 0 22px 0;position:relative}
+.tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;border:2px solid}
+.tl-dot.v{background:rgba(109,40,217,.14);border-color:var(--v4)}.tl-dot.p{background:rgba(192,38,211,.14);border-color:var(--p2)}
+.tl-dot.t{background:rgba(13,148,136,.14);border-color:var(--t2)}.tl-dot.ok{background:var(--okl);border-color:var(--ok)}
+.tl-dot svg{width:14px;height:14px}
+.tl-dot.v svg{color:var(--v4)}.tl-dot.p svg{color:var(--p2)}.tl-dot.t svg{color:var(--t2)}.tl-dot.ok svg{color:var(--ok)}
+.tl-body{flex:1;padding-top:4px}
+.tl-phase{font-family:var(--fm);font-size:.35rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;margin-bottom:3px}
+.tl-dot.v~.tl-body .tl-phase{color:var(--v4)}.tl-dot.p~.tl-body .tl-phase{color:var(--p2)}
+.tl-dot.t~.tl-body .tl-phase{color:var(--t2)}.tl-dot.ok~.tl-body .tl-phase{color:var(--ok)}
+.tl-title{font-family:var(--fh);font-size:.9rem;font-weight:700;color:var(--lt1);margin-bottom:5px}
+.tl-text{font-size:.74rem;color:var(--lt3);line-height:1.72}
+/* COMPLIANCE */
+.comp-list{display:flex;flex-direction:column;gap:10px}
+.comp-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--lc);border:1px solid var(--lb);border-radius:var(--r);transition:all .22s}
+.comp-item:hover{border-color:rgba(109,40,217,.24);transform:translateX(3px)}
+.comp-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.comp-ic.ok{background:var(--okl);border:1px solid var(--okb);color:var(--ok)}
+.comp-ic.v{background:rgba(109,40,217,.1);border:1px solid rgba(109,40,217,.2);color:var(--v3)}
+.comp-ic.t{background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.2);color:var(--t1)}
+.comp-ic svg{width:16px;height:16px}
+.comp-body{flex:1}
+.comp-name{font-family:var(--fh);font-size:.84rem;font-weight:700;color:var(--lt1);margin-bottom:2px}
+.comp-desc{font-size:.73rem;color:var(--lt3);line-height:1.6}
+.comp-status{font-family:var(--fm);font-size:.39rem;padding:2px 9px;border-radius:20px;border:1px solid;flex-shrink:0;margin-top:2px;align-self:center}
+.comp-status.ok{color:var(--ok);border-color:var(--okb);background:var(--okl)}
+.comp-status.ip{color:var(--wn);border-color:var(--wnb);background:var(--wnl)}
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.price-card{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:24px;text-align:center;transition:all .26s;position:relative;overflow:hidden}
+.price-card.feat{background:linear-gradient(160deg,var(--dv2),var(--dv3),#2e1050);border-color:rgba(139,92,246,.5)}
+.price-card:hover{box-shadow:var(--shlm);transform:translateY(-4px)}
+.price-card.feat:hover{box-shadow:var(--shdm)}
+.price-tier{font-family:var(--fm);font-size:.41rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--v3);margin-bottom:8px}
+.price-card.feat .price-tier{color:var(--v6)}
+.price-val{font-family:var(--fh);font-size:2rem;font-weight:900;letter-spacing:-.04em;margin-bottom:2px;color:var(--lt1)}
+.price-card.feat .price-val{color:#fff}
+.price-period{font-family:var(--fm);font-size:.46rem;color:var(--lt4);margin-bottom:15px}
+.price-card.feat .price-period{color:rgba(255,255,255,.48)}
+.price-feats{list-style:none;text-align:left;display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.price-feats li{display:flex;align-items:flex-start;gap:7px;font-size:.73rem;color:var(--lt2);line-height:1.5}
+.price-card.feat .price-feats li{color:rgba(255,255,255,.82)}
+.price-feats li::before{content:"\2713";color:var(--ok);font-weight:700;flex-shrink:0;margin-top:1px}
+.price-btn{width:100%;padding:10px;border-radius:var(--rl);font-family:var(--fh);font-size:.76rem;font-weight:700;border:none;cursor:pointer;transition:all .2s}
+.price-btn.def{background:var(--lbg2);color:var(--lt2);border:1.5px solid var(--lb2)}
+.price-btn.prim{background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;box-shadow:0 4px 16px rgba(109,40,217,.3)}
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.team-card{background:var(--lc);border:1px solid var(--lb);border-radius:var(--rl);padding:22px;text-align:center;transition:all .26s;position:relative;overflow:hidden}
+.team-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v3),var(--p2),var(--t2))}
+.team-card:hover{box-shadow:var(--shlm);transform:translateY(-3px)}
+.team-av{width:64px;height:64px;border-radius:50%;margin:0 auto 13px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.3rem;font-weight:800;color:#fff;border:3px solid rgba(139,92,246,.3)}
+.team-name{font-family:var(--fh);font-size:.9rem;font-weight:700;color:var(--lt1);margin-bottom:3px}
+.team-role{font-family:var(--fm);font-size:.42rem;color:var(--v3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px}
+.team-bio{font-size:.73rem;color:var(--lt3);line-height:1.72}
+/* TABLES */
+.rtbl{width:100%;border-collapse:collapse}
+.rtbl th{text-align:left;font-family:var(--fm);font-size:.38rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--lt4);padding:8px 10px;border-bottom:2px solid var(--lb2)}
+.rtbl td{padding:9px 10px;border-bottom:1px solid var(--lb);font-size:.73rem;color:var(--lt2);vertical-align:top;line-height:1.5}
+.rtbl tr:last-child td{border-bottom:none}
+.rtbl tr:hover{background:var(--lbg2)}
+.rl-h{color:var(--rd);font-family:var(--fm);font-size:.4rem;font-weight:700}
+.rl-m{color:var(--wn);font-family:var(--fm);font-size:.4rem;font-weight:700}
+.rl-l{color:var(--ok);font-family:var(--fm);font-size:.4rem;font-weight:700}
+.ctbl{width:100%;border-collapse:collapse}
+.ctbl th{text-align:left;font-family:var(--fm);font-size:.4rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--lt4);padding:9px 12px;border-bottom:2px solid var(--lb2)}
+.ctbl td{padding:10px 12px;border-bottom:1px solid var(--lb);font-size:.74rem;color:var(--lt2);vertical-align:middle}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl tr.our{background:linear-gradient(90deg,rgba(109,40,217,.05),rgba(109,40,217,.02))}
+.ctbl tr.our td{font-weight:600;color:#5b21b6}
+.ctbl tr:not(.our):hover{background:var(--lbg2)}
+.tick{color:var(--ok);font-size:.9rem}.cross{color:var(--rd);font-size:.9rem}.part{color:var(--wn);font-size:.9rem}
+/* AI DEMO */
+.demo-wrap{background:var(--dv1);border:1px solid var(--dvb2);border-radius:var(--rxl);overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--dvb);background:rgba(0,0,0,.3)}
+.demo-dots{display:flex;gap:5px}
+.demo-dots span{width:10px;height:10px;border-radius:50%}
+.d1{background:#ef4444}.d2{background:#f59e0b}.d3{background:#22c55e}
+.demo-title{font-family:var(--fm);font-size:.42rem;color:var(--dvt3);letter-spacing:.1em}
+.demo-body{padding:16px}
+.chat-area{min-height:280px;max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;padding-right:4px}
+.chat-area::-webkit-scrollbar{width:3px}.chat-area::-webkit-scrollbar-thumb{background:rgba(139,92,246,.25)}
+.msg{display:flex;gap:9px;max-width:90%}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem;font-weight:700}
+.msg.bot .msg-av{background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff}
+.msg.user .msg-av{background:rgba(139,92,246,.2);color:var(--v6);border:1px solid rgba(139,92,246,.3);font-family:var(--fm)}
+.msg-bubble{padding:9px 12px;border-radius:10px;font-size:.76rem;line-height:1.68}
+.msg.bot .msg-bubble{background:rgba(255,255,255,.06);color:var(--dvt);border:1px solid rgba(139,92,246,.18);border-radius:4px 10px 10px 10px}
+.msg.user .msg-bubble{background:linear-gradient(135deg,rgba(109,40,217,.5),rgba(168,85,247,.4));color:#fff;border-radius:10px 4px 10px 10px}
+.msg-ts{font-family:var(--fm);font-size:.36rem;color:var(--dvt3);margin-top:4px}
+.typing{display:none;align-items:center;gap:5px;padding:9px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(139,92,246,.14);border-radius:4px 10px 10px 10px;width:fit-content}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--v5);animation:bounce .8s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.16s}.typing span:nth-child(3){animation-delay:.32s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.demo-inp-row{display:flex;gap:8px}
+.demo-inp{flex:1;padding:10px 13px;border-radius:var(--r);border:1px solid rgba(139,92,246,.25);background:rgba(255,255,255,.05);color:var(--dvt);font-size:.8rem;outline:none;font-family:var(--fb)}
+.demo-inp::placeholder{color:rgba(255,255,255,.28)}
+.demo-inp:focus{border-color:rgba(139,92,246,.5);background:rgba(255,255,255,.08)}
+.demo-send{padding:10px 18px;border-radius:var(--r);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.75rem;font-weight:700;border:none;cursor:pointer}
+.demo-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.dchip{padding:4px 10px;border-radius:20px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.24);color:var(--dvt2);font-family:var(--fm);font-size:.39rem;cursor:pointer;transition:all .18s}
+.dchip:hover{background:rgba(139,92,246,.24);color:var(--dvt)}
+/* FORM */
+.frow{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.flbl{font-size:.71rem;font-weight:600;color:var(--lt2);margin-bottom:3px}
+.finp{width:100%;padding:10px 13px;border-radius:var(--r);border:1.5px solid var(--lb2);background:var(--lc);color:var(--lt1);font-size:.8rem;outline:none;font-family:var(--fb);transition:border-color .2s}
+.finp:focus{border-color:rgba(109,40,217,.42);box-shadow:0 0 0 3px rgba(109,40,217,.08)}
+.ftxt{min-height:90px;resize:vertical}
+.fsel{appearance:none}
+/* FOOTER - Dark Violet */
+.footer{background:linear-gradient(180deg,var(--dv2) 0%,var(--dv1) 100%);border-top:1px solid var(--dvb)}
+.f-cta-bar{background:linear-gradient(90deg,rgba(109,40,217,.18),rgba(168,85,247,.1),rgba(20,184,166,.08));border-bottom:1px solid rgba(139,92,246,.14);padding:18px 48px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.f-cta-txt{font-family:var(--fh);font-size:.94rem;font-weight:700;color:var(--dvt)}
+.f-cta-sub{font-family:var(--fm);font-size:.41rem;color:var(--dvt3);margin-top:3px}
+.f-cta-btns{display:flex;gap:11px;flex-wrap:wrap;flex-shrink:0}
+.f-btn-prim{padding:11px 26px;border-radius:var(--rl);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.8rem;font-weight:700;border:none;cursor:pointer;box-shadow:var(--gv);transition:all .22s;white-space:nowrap}
+.f-btn-prim:hover{transform:translateY(-2px);box-shadow:var(--shdm)}
+.f-btn-ghost{padding:10px 22px;border-radius:var(--rl);background:transparent;color:rgba(255,255,255,.8);font-family:var(--fh);font-size:.8rem;font-weight:700;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;transition:all .22s;white-space:nowrap}
+.f-btn-ghost:hover{background:rgba(255,255,255,.08)}
+.f-main{max-width:1200px;margin:0 auto;padding:46px 56px 40px;display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr 1.4fr;gap:44px}
+.f-logo-row{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.f-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--v3),var(--p1));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.f-icon svg{width:18px;height:18px;color:#fff}
+.f-nm{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--dvt);line-height:1.2}
+.f-nm em{background:linear-gradient(90deg,var(--v6),var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;font-weight:900}
+.f-desc{font-size:.77rem;color:var(--dvt3);line-height:1.84;margin-bottom:16px}
+.f-certs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.f-cert{padding:2px 9px;border-radius:20px;border:1px solid rgba(139,92,246,.2);background:rgba(139,92,246,.08);font-family:var(--fm);font-size:.41rem;color:var(--dvt3);letter-spacing:.06em}
+.f-col-head{font-family:var(--fh);font-size:.76rem;font-weight:700;color:var(--dvt);margin-bottom:16px}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.f-links li a{font-size:.73rem;color:var(--dvt3);transition:all .18s;display:flex;align-items:center;gap:6px}
+.f-links li a::before{content:"";width:4px;height:4px;border-radius:50%;background:rgba(139,92,246,.35);flex-shrink:0}
+.f-links li a:hover{color:var(--dvt);padding-left:3px}
+.f-nl-head{font-family:var(--fh);font-size:.76rem;font-weight:700;color:var(--dvt);margin-bottom:7px}
+.f-nl-sub{font-size:.71rem;color:var(--dvt3);line-height:1.7;margin-bottom:13px}
+.f-nl-form{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.f-nl-form input{width:100%;padding:9px 12px;border-radius:var(--r);border:1px solid rgba(139,92,246,.24);background:rgba(255,255,255,.05);color:var(--dvt);font-size:.78rem;outline:none;font-family:var(--fb)}
+.f-nl-form input::placeholder{color:rgba(255,255,255,.28)}
+.f-nl-form input:focus{border-color:rgba(139,92,246,.5)}
+.f-nl-form button{width:100%;padding:9px;border-radius:var(--r);background:linear-gradient(135deg,var(--v3),var(--p1));color:#fff;font-family:var(--fh);font-size:.75rem;font-weight:700;border:none;cursor:pointer}
+.f-bottom{border-top:1px solid rgba(139,92,246,.1);padding:18px 56px 24px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:22px}
+.f-copy{font-family:var(--fm);font-size:.48rem;color:var(--dvt3);letter-spacing:.03em;line-height:1.85}
+.f-legal{display:flex;gap:18px}
+.f-legal a{font-family:var(--fm);font-size:.48rem;color:var(--dvt3)}
+.f-legal a:hover{color:var(--dvt)}
+.f-soc{display:flex;gap:7px}
+.f-s{width:32px;height:32px;border-radius:8px;border:1px solid rgba(139,92,246,.2);background:rgba(139,92,246,.07);display:flex;align-items:center;justify-content:center;color:var(--dvt3);cursor:pointer;font-size:.75rem;transition:all .2s}
+.f-s:hover{background:rgba(139,92,246,.22);color:var(--dvt);transform:translateY(-2px)}
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--lc);border:1px solid var(--lb2);border-radius:var(--rl);padding:12px 15px;display:flex;align-items:flex-start;gap:10px;box-shadow:var(--shlm);min-width:280px;max-width:360px;transform:translateY(120%);transition:transform .35s cubic-bezier(.32,.72,0,1);pointer-events:none}
+.toast.show{transform:none;pointer-events:auto}
+.toast-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid}
+.toast-ic svg{width:14px;height:14px}
+.toast-title{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--lt1);margin-bottom:2px}
+.toast-msg{font-size:.69rem;color:var(--lt3)}
+.toast-x{font-size:.88rem;color:var(--lt4);cursor:pointer;flex-shrink:0;margin-top:1px}
+/* RESPONSIVE */
+@media(max-width:900px){
+  /* Layout */
+  .sidebar{display:none}
+  .mtop{display:flex}
+  .main{margin-left:0}
+  .mi{padding:16px 14px 30px;padding-top:70px}
+  .layout{flex-direction:column}
+
+  /* Grids */
+  .g4{grid-template-columns:1fr 1fr;gap:10px}
+  .g3{grid-template-columns:1fr 1fr;gap:12px}
+  .g2{grid-template-columns:1fr;gap:14px}
+  .g32{grid-template-columns:1fr;gap:14px}
+
+  /* KPI */
+  .kpi{padding:14px 16px;border-radius:14px}
+  .kpi-g{grid-template-columns:repeat(3,1fr);gap:8px}
+  .kpi-i{padding:10px 6px}
+  .kpi-v{font-size:1rem}
+  .kpi-l{font-size:.36rem}
+
+  /* Hero */
+  .hero{padding:24px 18px 28px;border-radius:14px;margin-bottom:14px}
+  .hero-orb{display:none}
+  .hero-title{font-size:clamp(1.15rem,4.5vw,1.6rem)}
+  .hero-sub{font-size:.8rem}
+  .hero-stats{gap:16px;flex-wrap:wrap}
+  .hsvl{font-size:1.2rem}
+  .hsll{font-size:.38rem}
+  .hbp,.hbs{padding:9px 18px;font-size:.75rem}
+
+  /* Section headers */
+  .sh{margin-bottom:16px}
+  .stitle{font-size:clamp(1rem,4vw,1.4rem)}
+  .ssub{font-size:.78rem}
+  .sa{width:100%}
+  .bp{width:100%;text-align:center;padding:9px 14px}
+
+  /* Stat cards */
+  .sc{padding:14px 10px}
+  .sv{font-size:clamp(1.1rem,4vw,1.6rem)}
+  .sd{font-size:.66rem}
+  .sn{font-size:.5rem}
+
+  /* Cards */
+  .card{padding:16px}
+  .card h3{font-size:.84rem}
+  .card p{font-size:.76rem}
+
+  /* Feat grid */
+  .feat-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .feat-title{font-size:.84rem}
+  .feat-text{font-size:.72rem}
+
+  /* Chart panels */
+  .cp{padding:14px}
+  .cp-t{font-size:.8rem}
+  .cw{height:160px}
+  .cw.t{height:200px}
+
+  /* SWOT */
+  .swot{grid-template-columns:1fr}
+  .sw-q:nth-child(1),.sw-q:nth-child(2),.sw-q:nth-child(3){border-right:none;border-bottom:1px solid var(--lb)}
+  .sw-q{padding:16px}
+  .sw-list li{font-size:.7rem}
+
+  /* Pricing */
+  .price-grid{grid-template-columns:1fr;gap:12px}
+  .price-val{font-size:1.6rem}
+
+  /* Team */
+  .team-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .team-av{width:52px;height:52px;font-size:1.1rem}
+  .team-name{font-size:.84rem}
+  .team-bio{font-size:.7rem}
+
+  /* Timeline */
+  .tl::before{left:15px}
+  .tl-dot{width:30px;height:30px}
+  .tl-dot svg{width:12px;height:12px}
+  .tl-title{font-size:.84rem}
+  .tl-text{font-size:.72rem}
+
+  /* Compliance */
+  .comp-name{font-size:.8rem}
+  .comp-desc{font-size:.7rem}
+
+  /* Demo */
+  .demo-body{padding:12px}
+  .chat-area{min-height:220px;max-height:280px}
+  .msg-bubble{font-size:.72rem;padding:8px 10px}
+  .demo-inp{font-size:.76rem}
+  .demo-chips{gap:4px}
+  .dchip{font-size:.37rem;padding:3px 8px}
+
+  /* Tables */
+  .rtbl,.ctbl{font-size:.68rem}
+  .rtbl th,.ctbl th{font-size:.36rem;padding:6px 7px}
+  .rtbl td,.ctbl td{padding:7px 7px}
+  .ctbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  /* Form */
+  .g2 .frow{grid-column:1/-1}
+
+  /* Footer */
+  .f-cta-bar{padding:18px 16px;flex-direction:column;text-align:center;gap:14px}
+  .f-cta-txt{font-size:.86rem}
+  .f-cta-btns{width:100%;flex-direction:column;gap:8px}
+  .f-btn-prim,.f-btn-ghost{width:100%;text-align:center;padding:10px}
+  .f-main{grid-template-columns:1fr 1fr;padding:24px 18px;gap:24px}
+  .f-bottom{grid-template-columns:1fr;padding:14px 18px 20px;text-align:center;gap:10px}
+  .f-legal{justify-content:center;flex-wrap:wrap;gap:10px}
+  .f-soc{justify-content:center}
+  .f-nl-form{flex-direction:column}
+
+  /* Progress bars */
+  .pi{margin-bottom:8px}
+  .pl{font-size:.67rem}
+  .pp{font-size:.58rem}
+
+  /* Activity feed */
+  .am{font-size:.68rem}
+  .at{font-size:.53rem}
+
+  /* Badges */
+  .sbadge{font-size:.35rem}
+  .bdg{font-size:.42rem}
+}
+
+@media(max-width:700px){
+  /* Narrower tablet */
+  .g4{grid-template-columns:1fr 1fr}
+  .kpi-g{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .f-main{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;gap:8px}
+  .hbp,.hbs{width:100%;text-align:center}
+  .price-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:540px){
+  /* Phone */
+  .g4{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr}
+  .kpi-g{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;gap:10px}
+  .hero-stats>div{min-width:calc(50% - 5px)}
+  .hsvl{font-size:1.1rem}
+  .feat-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .swot{grid-template-columns:1fr}
+  .mi{padding:12px 11px 28px;padding-top:66px}
+  .hero{padding:18px 14px 22px}
+  .cp{padding:12px}
+  .cw{height:145px}
+  .cw.t{height:185px}
+  .price-grid{grid-template-columns:1fr}
+  .f-main{grid-template-columns:1fr;padding:20px 14px}
+  .f-cta-bar{padding:16px 14px}
+  .kpi-g{grid-template-columns:1fr 1fr}
+  .sc{padding:12px 8px}
+  .card{padding:14px}
+  .demo-wrap{border-radius:12px}
+  .chat-area{min-height:200px;max-height:240px}
+  .ctbl th:nth-child(n+3),.ctbl td:nth-child(n+3){display:none}
+  .stitle{font-size:clamp(.95rem,5vw,1.3rem)}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo"><div class="sb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div><div class="sb-name"><em>Autonomy</em>Governance<em>Hub</em></div></div></div>
+    <div class="sb-tag">Runtime Trust Platform &#183; UK 2026</div>
+  </div>
+  <div class="sb-live"><div class="sb-dot"></div><span class="sb-live-txt">TRL-7 Active &#183; Coventry, UK</span></div>
+  <nav class="sb-nav">
+    <div class="sb-grp">
+      <div class="sb-glbl">Platform</div>
+      <button class="sb-item active" onclick="nav('overview',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>Dashboard Overview<span class="sb-chip">01</span></button>
+      <button class="sb-item" onclick="nav('problem',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>The Governance Gap<span class="sb-chip">02</span></button>
+
+      <button class="sb-item" onclick="nav('solution',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>Our Solution<span class="sb-chip">03</span></button>
+
+      <button class="sb-item" onclick="nav('technology',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>Technology<span class="sb-chip">04</span></button>
+
+      <button class="sb-item" onclick="nav('innovation',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg></div>Innovation &amp; IP<span class="sb-chip n">NEW</span></button>
+
+    </div>
+    <div class="sb-grp">
+      <div class="sb-glbl">Market</div>
+      <button class="sb-item" onclick="nav('market',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Market Analysis<span class="sb-chip">06</span></button>
+
+      <button class="sb-item" onclick="nav('businessmodel',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>Business Model<span class="sb-chip">07</span></button>
+
+      <button class="sb-item" onclick="nav('competitor',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>Competitor Analysis<span class="sb-chip">08</span></button>
+
+    </div>
+    <div class="sb-grp">
+      <div class="sb-glbl">Business</div>
+      <button class="sb-item" onclick="nav('roadmap',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Product Roadmap<span class="sb-chip">09</span></button>
+
+      <button class="sb-item" onclick="nav('compliance',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>Compliance &amp; IPR<span class="sb-chip">10</span></button>
+
+      <button class="sb-item" onclick="nav('financials',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>Financials<span class="sb-chip">11</span></button>
+
+      <button class="sb-item" onclick="nav('team',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>Team &amp; HR<span class="sb-chip">12</span></button>
+
+    </div>
+    <div class="sb-grp">
+      <div class="sb-glbl">More</div>
+      <button class="sb-item" onclick="nav('pricing',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div>Pricing Tiers<span class="sb-chip">13</span></button>
+
+      <button class="sb-item" onclick="nav('risk',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>Risk &amp; SWOT<span class="sb-chip">14</span></button>
+
+      <button class="sb-item" onclick="nav('demo',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>Live AI Demo<span class="sb-chip n">LIVE</span></button>
+
+      <button class="sb-item" onclick="nav('contact',this)"><div class="sb-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Contact &amp; Pilots<span class="sb-chip">16</span></button>
+
+    </div>
+  </nav>
+  <div class="sb-foot">
+    <button class="sb-cta" onclick="nav('demo',null)">Launch AI Demo</button>
+    <div class="sb-fdr">Akhila Medisetti &#183; Founder &amp; CEO &#183; Coventry, UK</div>
+  </div>
+</aside>
+
+<div class="mtop">
+  <div><div class="mb-nm"><em>Autonomy</em>Governance<em>Hub</em></div><div class="mb-pg" id="mob-pg-name">Dashboard Overview</div></div>
+  <div class="mr">
+    <div class="mlive"><span style="width:6px;height:6px;border-radius:50%;background:var(--t2);display:inline-block;animation:pulse 2s infinite;margin-right:3px"></span>TRL-7</div>
+    <div class="mhbg" id="mhbtn" onclick="toggleDrawer()"><span></span><span></span><span></span></div>
+  </div>
+</div>
+<div class="drov" id="drov" onclick="closeDrawer()"></div>
+<div class="dr" id="drawer">
+  <div class="dr-head"><div class="dr-nm"><em>Autonomy</em>Governance<em>Hub</em></div><div class="dr-x" onclick="closeDrawer()">&#x2715;</div></div>
+  <nav class="dr-nav">
+    <div class="dr-gl">Platform</div>
+    <button class="dr-item active" onclick="navM('overview',this,'Dashboard Overview')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>Dashboard Overview</button>
+    <button class="dr-item" onclick="navM('problem',this,'The Governance Gap')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>The Governance Gap</button>
+
+    <button class="dr-item" onclick="navM('solution',this,'Our Solution')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>Our Solution</button>
+
+    <button class="dr-item" onclick="navM('technology',this,'Technology')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>Technology</button>
+
+    <button class="dr-item" onclick="navM('innovation',this,'Innovation and IP')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg></div>Innovation and IP</button>
+
+    <div class="dr-gl">Market</div>
+    <button class="dr-item" onclick="navM('market',this,'Market Analysis')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Market Analysis</button>
+
+    <button class="dr-item" onclick="navM('businessmodel',this,'Business Model')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>Business Model</button>
+
+    <button class="dr-item" onclick="navM('competitor',this,'Competitor Analysis')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>Competitor Analysis</button>
+
+    <div class="dr-gl">Business</div>
+    <button class="dr-item" onclick="navM('roadmap',this,'Product Roadmap')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Product Roadmap</button>
+
+    <button class="dr-item" onclick="navM('compliance',this,'Compliance and IPR')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>Compliance and IPR</button>
+
+    <button class="dr-item" onclick="navM('financials',this,'Financials')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>Financials</button>
+
+    <button class="dr-item" onclick="navM('team',this,'Team and HR')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>Team and HR</button>
+
+    <div class="dr-gl">More</div>
+    <button class="dr-item" onclick="navM('pricing',this,'Pricing Tiers')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div>Pricing Tiers</button>
+
+    <button class="dr-item" onclick="navM('risk',this,'Risk and SWOT')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>Risk and SWOT</button>
+
+    <button class="dr-item" onclick="navM('demo',this,'Live AI Demo')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>Live AI Demo</button>
+
+    <button class="dr-item" onclick="navM('contact',this,'Contact and Pilots')"><div class="dr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Contact and Pilots</button>
+
+  </nav>
+  <div class="dr-foot"><button class="dr-cta" onclick="navM('demo',null,'Live AI Demo');closeDrawer()">Launch AI Demo</button></div>
+</div>
+
+<div class="layout"><div class="main"><div class="mi">
+
+<div class="page active" id="pg-overview">
+  <div class="hero ain"><div class="hero-orb"></div><div class="hero-c">
+    <div class="hero-badge"><span style="width:6px;height:6px;border-radius:50%;background:var(--t2);display:inline-block"></span> TRL-7 Active - Dark Violet / Light Violet Theme</div>
+    <h1 class="hero-title">UK's First <span>Digital Air Traffic Control</span> for Autonomous AI Agents</h1>
+    <p class="hero-sub">AutonomyGovernanceHub bridges the Governance Gap in enterprise AI -- intercepting agent reasoning chains in real-time with sub-50ms latency, enforcing policy guardrails, and delivering built-in DORA, EU AI Act, and ISO 42001 compliance at machine speed.</p>
+    <div class="hero-stats">
+      <div><div class="hsvl">&lt;50ms</div><div class="hsll">Intercept Latency</div></div>
+      <div><div class="hsvl">94%</div><div class="hsll">Drift Detection</div></div>
+      <div><div class="hsvl">&#163;260M</div><div class="hsll">UK TAM</div></div>
+      <div><div class="hsvl">TRL-7</div><div class="hsll">Dev Level</div></div>
+    </div>
+    <div class="hero-btns">
+      <button class="hbp" onclick="nav('demo',null)">Try Live Demo</button>
+      <button class="hbs" onclick="nav('solution',null)">Explore Solution</button>
+    </div>
+  </div></div>
+  <div class="kpi ain"><div class="kpi-lbl">Live Platform Performance Indicators</div>
+    <div class="kpi-g">
+      <div class="kpi-i"><div class="kpi-v" style="background:linear-gradient(135deg,#5b21b6,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">50K</div><div class="kpi-l">Daily Agent Interactions</div></div>
+      <div class="kpi-i"><div class="kpi-v" style="background:linear-gradient(135deg,#0d9488,#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">99.99%</div><div class="kpi-l">Uptime SLA</div></div>
+      <div class="kpi-i"><div class="kpi-v" style="background:linear-gradient(135deg,#059669,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent">5K</div><div class="kpi-l">Concurrent Sessions</div></div>
+      <div class="kpi-i"><div class="kpi-v" style="background:linear-gradient(135deg,#9333ea,#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent">&#163;4,791</div><div class="kpi-l">Annual ARPU</div></div>
+      <div class="kpi-i"><div class="kpi-v" style="background:linear-gradient(135deg,#d97706,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent">15%</div><div class="kpi-l">Of Manual Audit Cost</div></div>
+    </div>
+  </div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc v"><div class="sv v">&#163;74K</div><div class="sd">Year 1 Revenue</div><div class="sn">Month 7 Launch</div></div>
+    <div class="sc p"><div class="sv p">&#163;315K</div><div class="sd">Year 2 Revenue</div><div class="sn">320% YoY Growth</div></div>
+    <div class="sc t"><div class="sv t">&#163;1.03M</div><div class="sd">Year 3 Revenue</div></div>
+    <div class="sc ok"><div class="sv ok">&#163;3.09M</div><div class="sd">Year 5 Revenue</div><div class="sn">Global Expansion</div></div>
+  </div>
+  <div class="g32 ain">
+    <div class="cp"><div class="cp-h"><span class="cp-t">5-Year Revenue and Profit Forecast</span><span class="bdg v">GBP</span></div><div class="cw t"><canvas id="chartRevenue"></canvas></div></div>
+    <div class="cp"><div class="cp-h"><span class="cp-t">UK Sector TAM Distribution</span><span class="bdg p">&#163;260M Total</span></div><div class="cw t"><canvas id="chartSector"></canvas></div></div>
+  </div>
+  <div class="g3 ain" style="margin-top:18px">
+    <div class="card card-v"><div class="cic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Runtime Intercept</h3><p>Sub-50ms trust scoring stops unsafe agent actions before execution. The world's only pre-execution AI governance layer for enterprise production environments.</p></div>
+    <div class="card card-p"><div class="cic p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>GAN-Driven Hardening</h3><p>Generative Adversarial Networks simulate 10,000+ adversarial agent scenarios monthly, proactively evolving governance guardrails before threats emerge.</p></div>
+    <div class="card card-t"><div class="cic t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><h3>Compliance-as-a-Service</h3><p>Out-of-the-box alignment with EU AI Act 2024, DORA, GDPR, ISO 42001, and NHS DTAC, reducing compliance audit burden by 85% automatically.</p></div>
+  </div>
+</div>
+
+<div class="page" id="pg-problem">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge rd">Critical Gap</div><h1 class="stitle">The Enterprise AI Governance Gap</h1><p class="ssub">While 99% of enterprise developers now explore agentic AI, 80% have already encountered serious risky behaviours. Traditional IT governance is fundamentally incapable of managing non-deterministic autonomous agents at machine speed.</p></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc rd"><div class="sv rd">99%</div><div class="sd">Devs exploring agentic AI</div></div>
+    <div class="sc wn"><div class="sv wn">80%</div><div class="sd">Orgs hit risky behaviours</div></div>
+    <div class="sc rd"><div class="sv rd">90%</div><div class="sd">Agents over-permissioned</div></div>
+    <div class="sc v"><div class="sv v">0</div><div class="sd">Existing runtime tools</div></div>
+  </div>
+  <div class="g2 ain" style="margin-bottom:18px">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Governance Gap Severity by Sector</span><span class="bdg rd">Risk Score</span></div><div class="cw t"><canvas id="chartGap"></canvas></div></div>
+    <div class="cp"><div class="cp-h"><span class="cp-t">Problem Dimension Criticality</span></div><div style="padding-top:8px">
+      <div class="pi"><div class="ph"><span class="pl">Shadow AI and Unsanctioned Agents</span><span class="pp" style="color:var(--rd)">Critical</span></div><div class="pt"><div class="pf p" style="width:92%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Over-Privileged Agent Permissions</span><span class="pp" style="color:var(--rd)">Critical</span></div><div class="pt"><div class="pf p" style="width:88%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Agentic Drift and Non-Determinism</span><span class="pp" style="color:var(--wn)">High</span></div><div class="pt"><div class="pf v" style="width:82%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Fragmented Audit Trails</span><span class="pp" style="color:var(--wn)">High</span></div><div class="pt"><div class="pf v" style="width:76%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Regulatory Compliance Deadlines</span><span class="pp" style="color:var(--v3)">Medium</span></div><div class="pt"><div class="pf t" style="width:70%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Human Oversight Scalability Crisis</span><span class="pp" style="color:var(--v3)">Medium</span></div><div class="pt"><div class="pf t" style="width:65%"></div></div></div>
+    </div></div>
+  </div>
+  <div class="feat-grid ain">
+    <div class="feat-card cr"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="feat-title">Shadow AI Proliferation</div><div class="feat-text">Thousands of invisible agents operate within Microsoft 365, Salesforce, and AWS without any audit trail or governance oversight across the enterprise estate.</div></div>
+    <div class="feat-card cw"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div class="feat-title">Over-Privileged Agents</div><div class="feat-text">AI agents hold 10x more privileges than required. A single prompt injection can delete production databases or exfiltrate PII across the entire enterprise.</div></div>
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="feat-title">Agentic Drift</div><div class="feat-text">Agents deviate from intended objectives due to model updates or context poisoning, creating unpredictable shortcuts that violate safety protocols in production.</div></div>
+    <div class="feat-card cp"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div class="feat-title">No Replayable Audit Trail</div><div class="feat-text">No replayable record of agent reasoning makes EU AI Act explainability requirements impossible to meet with current enterprise infrastructure tools.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="feat-title">Oversight Bottleneck</div><div class="feat-text">Manual human-in-the-loop reviews negate efficiency gains as agent fleets scale from dozens to thousands of concurrent autonomous processes in production.</div></div>
+    <div class="feat-card cr"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="feat-title">Regulatory Paralysis</div><div class="feat-text">EU AI Act and DORA 2025 enforcement mandates continuous runtime risk management. Most organisations lack the technical infrastructure needed to comply.</div></div>
+  </div>
+</div>
+
+<div class="page" id="pg-solution">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge ok">Our Answer</div><h1 class="stitle">Runtime Trust Orchestration Layer</h1><p class="ssub">AutonomyGovernanceHub is an AI-native real-time control plane -- a Digital Air Traffic Control for AI agents -- sitting between autonomous agents and enterprise systems, intercepting every intent before execution at machine speed.</p></div><div class="sa"><button class="bp" onclick="nav('demo',null)">Try Live Demo</button></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc t"><div class="sv t">&lt;50ms</div><div class="sd">Intercept Latency</div></div>
+    <div class="sc v"><div class="sv v">94%</div><div class="sd">Drift Detection</div></div>
+    <div class="sc ok"><div class="sv ok">99%</div><div class="sd">Tasks Auto-Governed</div></div>
+    <div class="sc p"><div class="sv p">85%</div><div class="sd">Audit Cost Reduction</div></div>
+  </div>
+  <div class="feat-grid ain" style="margin-bottom:18px">
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="feat-title">Real-Time Behavioural Guardrails</div><div class="feat-text">Intercepts and blocks unsafe API calls, SQL queries, and bash commands in milliseconds using the proprietary Autonomy Envelope control plane before execution.</div></div>
+    <div class="feat-card cp"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg></div><div class="feat-title">Chain-of-Thought Auditing</div><div class="feat-text">Captures and evaluates the full reasoning process behind every autonomous decision, creating forensic-grade immutable audit trails for regulatory compliance.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="feat-title">Automated Drift Detection</div><div class="feat-text">Continuously compares live agent behaviour against safety baseline profiles, catching deviations before they manifest as production failures or data exfiltration.</div></div>
+    <div class="feat-card cw"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div><div class="feat-title">Risk-Adaptive HITL</div><div class="feat-text">Routes only high-stakes decisions to human supervisors, maintaining machine-speed execution for 99% of tasks while ensuring accountability for the critical 1%.</div></div>
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div><div class="feat-title">Edge-Native Data Sovereignty</div><div class="feat-text">Governance-at-the-Edge containers process all reasoning data locally. Sensitive CoT logs never leave the client perimeter. GDPR-native by design.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg></div><div class="feat-title">Multi-Framework Integration</div><div class="feat-text">Open SDKs integrate with LangChain, AutoGPT, and Microsoft Autogen, transforming AI safety from a manual audit into core middleware infrastructure.</div></div>
+  </div>
+  <div class="g32 ain">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Intercept Processing Pipeline (ms)</span><span class="bdg t">Sub-50ms Total</span></div><div class="cw t"><canvas id="chartFlow"></canvas></div></div>
+    <div class="card card-dk" style="display:flex;flex-direction:column;justify-content:center;gap:13px">
+      <h3>In Simple Terms</h3>
+      <p>Just as an air traffic controller ensures every plane follows the correct flight path, AutonomyGovernanceHub ensures every AI agent stays within its Safety Envelope -- understanding agent intent, checking it against company rules, and instantly stopping anything dangerous.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"><span class="bdg v">EU AI Act</span><span class="bdg p">DORA</span><span class="bdg ok">ISO 42001</span><span class="bdg t">GDPR</span><span class="bdg v">NHS DTAC</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-technology">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge t">Deep Tech</div><h1 class="stitle">Core Technology Architecture</h1><p class="ssub">Combining Transformer-based reasoning analysis, GAN-driven threat modelling, and a context-aware Autonomy Envelope to deliver production-grade agentic runtime governance with a proprietary technical moat.</p></div></div></div>
+  <div class="g2 ain" style="margin-bottom:18px">
+    <div class="cp"><div class="cp-h"><span class="cp-t">GAN Adversarial Scenario Volume (Monthly)</span><span class="bdg t">Growing</span></div><div class="cw t"><canvas id="chartGAN"></canvas></div></div>
+    <div class="cp"><div class="cp-h"><span class="cp-t">Guardrail Accuracy by Sector</span><span class="bdg ok">94%+ Avg</span></div><div class="cw t"><canvas id="chartAccuracy"></canvas></div></div>
+  </div>
+  <div class="feat-grid ain" style="margin-bottom:18px">
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="feat-title">Transformer Intent Engine</div><div class="feat-text">High-performance models fine-tuned on enterprise agent reasoning paths. Processes intents in under 50ms using optimised gRPC interceptors and custom inference pipelines.</div></div>
+    <div class="feat-card cp"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div><div class="feat-title">GAN Synthetic Threat Engine</div><div class="feat-text">Generates 10,000+ adversarial agent failure scenarios monthly covering prompt injection, logic bypass, and agentic collusion patterns before production exposure.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div class="feat-title">Replayable Trust Ledger</div><div class="feat-text">Forensic-grade, immutable capture of every Chain-of-Thought reasoning step, policy evaluation, and execution outcome stored encrypted in UK-based data centres.</div></div>
+    <div class="feat-card cw"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div><div class="feat-title">Zero-Trust Agent Identity</div><div class="feat-text">Cryptographically unique agent identities with ephemeral, task-specific permissions. Eliminates over-privileged access using AES-256 encryption and hardware-backed keys.</div></div>
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div><div class="feat-title">Hybrid Cloud-Edge Architecture</div><div class="feat-text">Docker and Kubernetes containers deploy Governance-at-the-Edge locally while the cloud engine provides continuous model updates and global policy synchronisation.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/></svg></div><div class="feat-title">Domain-Specific Modules</div><div class="feat-text">Pre-configured governance templates for Finance (DORA/FCA), Healthcare (HIPAA/NHS DTAC), and Government (Sovereign AI) with one-click sector deployment.</div></div>
+  </div>
+  <div class="cp ain"><div class="cp-h"><span class="cp-t">Tech Stack -- Production Infrastructure</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-top:4px">
+      <div><div class="pi"><div class="ph"><span class="pl">PyTorch / Transformers</span><span class="pp" style="color:var(--v3)">Core AI</span></div><div class="pt"><div class="pf v" style="width:96%"></div></div></div><div class="pi"><div class="ph"><span class="pl">FastAPI + gRPC</span><span class="pp" style="color:var(--v3)">Backend</span></div><div class="pt"><div class="pf v" style="width:98%"></div></div></div></div>
+      <div><div class="pi"><div class="ph"><span class="pl">Azure UK South + AWS London</span><span class="pp" style="color:var(--t1)">Infra</span></div><div class="pt"><div class="pf t" style="width:90%"></div></div></div><div class="pi"><div class="ph"><span class="pl">Docker + Kubernetes</span><span class="pp" style="color:var(--t1)">Infra</span></div><div class="pt"><div class="pf t" style="width:92%"></div></div></div></div>
+      <div><div class="pi"><div class="ph"><span class="pl">NVIDIA A100/H100 GPUs</span><span class="pp" style="color:var(--ok)">Compute</span></div><div class="pt"><div class="pf g" style="width:85%"></div></div></div><div class="pi"><div class="ph"><span class="pl">MLflow + W&amp;B MLOps</span><span class="pp" style="color:var(--ok)">MLOps</span></div><div class="pt"><div class="pf g" style="width:88%"></div></div></div></div>
+      <div><div class="pi"><div class="ph"><span class="pl">Next.js Dashboard</span><span class="pp" style="color:var(--p1)">Frontend</span></div><div class="pt"><div class="pf p" style="width:82%"></div></div></div><div class="pi"><div class="ph"><span class="pl">Prometheus + Grafana</span><span class="pp" style="color:var(--p1)">Monitor</span></div><div class="pt"><div class="pf p" style="width:86%"></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-innovation">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Innovation</div><h1 class="stitle">Pioneering Runtime Trust for the Agentic Era</h1><p class="ssub">Five breakthrough innovations collectively create a formidable IP moat, establishing AutonomyGovernanceHub as the global standard for autonomous enterprise AI governance.</p></div><div class="sa"><span class="bdg v">5 Patents Pending</span></div></div></div>
+  <div class="tl ain" style="margin-bottom:18px">
+    <div class="tl-item"><div class="tl-dot v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tl-body"><div class="tl-phase">Innovation 01</div><div class="tl-title">Real-Time Runtime Trust Interception</div><div class="tl-text">The world's first pre-execution interception system for AI agent reasoning chains. The Autonomy Envelope evaluates intent in under 50ms, blocking unsafe actions before they reach the enterprise environment. Unlike post-hoc logging tools, we prevent failures as they happen.</div></div></div>
+    <div class="tl-item"><div class="tl-dot p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="tl-body"><div class="tl-phase">Innovation 02</div><div class="tl-title">GAN-Driven Adversarial Agent Simulation</div><div class="tl-text">Generative Adversarial Networks create synthetic adversarial agent scenarios at scale, addressing the acute scarcity of real-world agent failure data. This proprietary dataset forms a defensible competitive moat that evolves faster than emerging threats without manual curation.</div></div></div>
+    <div class="tl-item"><div class="tl-dot t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div class="tl-body"><div class="tl-phase">Innovation 03</div><div class="tl-title">Adaptive Chain-of-Thought Translation Layer</div><div class="tl-text">A multimodal translation layer converting complex agent reasoning into both human-readable policy audits and machine-executable guardrails simultaneously, satisfying EU AI Act Article 13 explainability requirements automatically.</div></div></div>
+    <div class="tl-item"><div class="tl-dot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div><div class="tl-body"><div class="tl-phase">Innovation 04</div><div class="tl-title">Federated Edge-Native Privacy Framework</div><div class="tl-text">Unique federated enforcement allowing organisations to govern agents locally while receiving encrypted centralised policy updates. All sensitive agent CoT data is processed within the organisational environment -- GDPR and DORA native, never transmitted to the cloud.</div></div></div>
+    <div class="tl-item"><div class="tl-dot v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="tl-body"><div class="tl-phase">Innovation 05</div><div class="tl-title">Sector-Specific Safety Envelope Modules</div><div class="tl-text">Pre-calibrated Safety Envelopes for Finance (DORA/FCA), Healthcare (HIPAA/NHS DTAC), and Government (Sovereign AI) incorporating domain-specific vocabulary and regulatory constraints for immediate sector deployment.</div></div></div>
+  </div>
+  <div class="g2 ain">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Innovation Advantage vs Best Competitor</span><span class="bdg v">Radar</span></div><div class="cw t"><canvas id="chartRadar"></canvas></div></div>
+    <div class="card"><h3 style="margin-bottom:12px">Patent Pipeline -- UKIPO and PCT</h3>
+      <div class="af">
+        <div class="ai-item"><div class="adot v"></div><div><div class="am">Patent 1: Runtime Trust Orchestration Control Plane</div><div class="at">UKIPO Filing Q3 2026 - PCT follow-up planned</div></div><span class="bdg v" style="margin-left:auto;flex-shrink:0">Filing</span></div>
+        <div class="ai-item"><div class="adot p"></div><div><div class="am">Patent 2: Replayable Trust Ledger and Reasoning Capture</div><div class="at">UKIPO Filing Q3 2026</div></div><span class="bdg p" style="margin-left:auto;flex-shrink:0">Filing</span></div>
+        <div class="ai-item"><div class="adot t"></div><div><div class="am">Patent 3: Risk-Adaptive Permissioning Engine</div><div class="at">Provisional claims drafted - Legal review</div></div><span class="bdg t" style="margin-left:auto;flex-shrink:0">Prep</span></div>
+        <div class="ai-item"><div class="adot ok"></div><div><div class="am">Patent 4: GAN-Based Adversarial Policy Hardening</div><div class="at">Technical documentation complete</div></div><span class="bdg ok" style="margin-left:auto;flex-shrink:0">Draft</span></div>
+        <div class="ai-item"><div class="adot v"></div><div><div class="am">Patent 5: Federated Edge-Native Privacy Framework</div><div class="at">Specification in preparation - 2026</div></div><span class="bdg v" style="margin-left:auto;flex-shrink:0">Prep</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-market">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge p">Market</div><h1 class="stitle">Market Analysis and Opportunity</h1><p class="ssub">The global AI Trust, Risk, and Security Management market reaches USD 56.7 billion by 2030. The UK presents a 260M+ GBP addressable market across five high-urgency sectors facing immediate regulatory enforcement pressure.</p></div><div class="sa"><span class="bdg t">USD 56.7B Global by 2030</span></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc v"><div class="sv v">&#163;260M</div><div class="sd">UK Total Addressable Market</div><div class="sn">Annual All Sectors</div></div>
+    <div class="sc p"><div class="sv p">17.4%</div><div class="sd">Global Market CAGR</div><div class="sn">Through 2030</div></div>
+    <div class="sc t"><div class="sv t">100M+</div><div class="sd">Autonomous Agents by 2030</div><div class="sn">Each needing governance</div></div>
+    <div class="sc ok"><div class="sv ok">75%</div><div class="sd">UK Large Enterprises</div><div class="sn">Planning agentic AI 2026</div></div>
+  </div>
+  <div class="g32 ain" style="margin-bottom:18px">
+    <div class="cp"><div class="cp-h"><span class="cp-t">TAM by Sector (GBP M/Year - UK)</span><span class="bdg v">UK Market</span></div><div class="cw t"><canvas id="chartTAM"></canvas></div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-v"><h3>Banking and Financial</h3><p>350 Tier-1/2 Banks, 1,500 Fintechs, 400 Insurers under DORA. Average spend &#163;25,000/yr.</p><div style="margin-top:8px"><span class="bdg v">TAM: &#163;56.25M</span></div></div>
+      <div class="card card-p"><h3>Enterprise IT / MSPs</h3><p>2,500 MSPs and 5,000 corporate IT departments managing VDI and cloud. Average &#163;12,000/yr.</p><div style="margin-top:8px"><span class="bdg p">TAM: &#163;90M</span></div></div>
+      <div class="card card-t"><h3>Healthcare (NHS and Private)</h3><p>229 NHS Trusts, 1,148 hospitals requiring NHS DTAC AI compliance. Average &#163;15,000/yr.</p><div style="margin-top:8px"><span class="bdg t">TAM: &#163;20.65M</span></div></div>
+    </div>
+  </div>
+  <div class="cp ain"><div class="cp-h"><span class="cp-t">Global TRiSM Market Growth (USD Bn) -- 2023 to 2030</span><span class="bdg p">25%+ CAGR AgentOps Sub-Segment</span></div><div class="cw t"><canvas id="chartGlobalMarket"></canvas></div></div>
+</div>
+
+<div class="page" id="pg-businessmodel">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Revenue</div><h1 class="stitle">Business Model and Revenue Streams</h1><p class="ssub">A diversified B2B SaaS model with eight interlocking revenue streams ensures stable recurring income. Annual ARPU of 4,791 GBP per institutional client, scaling to 3.09M GBP total revenue by Year 5 with 98.5% gross margin.</p></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc v"><div class="sv v">&#163;199</div><div class="sd">Basic / Month</div><div class="sn">Up to 5 agents</div></div>
+    <div class="sc p"><div class="sv p">&#163;499</div><div class="sd">Professional / Month</div><div class="sn">Full enforcement + API</div></div>
+    <div class="sc t"><div class="sv t">&#163;1K+</div><div class="sd">Enterprise / Month</div><div class="sn">Custom white-label</div></div>
+    <div class="sc ok"><div class="sv ok">&#163;4,791</div><div class="sd">Annual ARPU</div><div class="sn">Weighted average</div></div>
+  </div>
+  <div class="g2 ain" style="margin-bottom:18px">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Revenue Stream Mix (Year 3 Projection)</span></div><div class="cw t"><canvas id="chartRevMix"></canvas></div></div>
+    <div class="cp"><div class="cp-h"><span class="cp-t">ARPU Trajectory (GBP/Year per Client)</span><span class="bdg ok">Growing</span></div><div class="cw t"><canvas id="chartARPU"></canvas></div></div>
+  </div>
+  <div class="feat-grid ain">
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="feat-title">B2B SaaS Subscriptions</div><div class="feat-text">Tiered institutional licensing: Basic 199 GBP/mo, Professional 499 GBP/mo, Enterprise 1,000+ GBP/mo. Stable recurring revenue with high institutional retention.</div></div>
+    <div class="feat-card cp"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/></svg></div><div class="feat-title">API and SDK Licensing</div><div class="feat-text">0.10 to 0.25 GBP per agent interaction for third-party integrators. Annual SDK packages 2,500 to 5,000 GBP for ISVs building on the governance engine.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div class="feat-title">Sector Governance Modules</div><div class="feat-text">Finance/DORA 499 GBP/yr, Healthcare/HIPAA 399 GBP/yr, Public Service 299 GBP/yr. Pre-configured guardrails with annual compliance renewals included.</div></div>
+    <div class="feat-card cw"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div><div class="feat-title">Edge Deployment Kits</div><div class="feat-text">One-time hardware kits at 3,600 GBP incl. VAT -- 1-year software licence, optimised edge compute node, and initial integration support included.</div></div>
+    <div class="feat-card cv"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="feat-title">Training and Certification</div><div class="feat-text">Institutional training packages 1,000 to 3,000 GBP/year for AI Safety Officers, IT Managers, and Compliance Directors covering platform operation and governance standards.</div></div>
+    <div class="feat-card ct"><div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div><div class="feat-title">Research Data Licences</div><div class="feat-text">Universities and AI safety bodies license anonymised adversarial datasets at 2,000 to 5,000 GBP/year, supporting global AI safety research ethically.</div></div>
+  </div>
+</div>
+
+<div class="page" id="pg-competitor">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge p">Landscape</div><h1 class="stitle">Competitor Analysis</h1><p class="ssub">No current competitor offers a UK-centric, runtime-control-driven, fully real-time governance solution for autonomous agents. AutonomyGovernanceHub occupies a unique and defensible position in the emerging AgentOps market.</p></div></div></div>
+  <div class="cp ain" style="margin-bottom:18px">
+    <div class="cp-h"><span class="cp-t">Competitive Feature Matrix</span><span class="bdg ok">We Lead on All Key Dimensions</span></div>
+    <div style="overflow-x:auto"><table class="ctbl">
+      <thead><tr><th>Feature</th><th>AutonomyGovernanceHub</th><th>Palo Alto Prisma AI</th><th>LangSmith</th><th>Arize AI</th><th>Weights &amp; Biases</th></tr></thead>
+      <tbody>
+        <tr class="our"><td><strong>Core Focus</strong></td><td>AI-native Runtime Intercept + GAN</td><td>Infrastructure Firewall/DLP</td><td>Post-hoc LLM Tracing</td><td>ML Observability</td><td>DevOps Experiment Tracking</td></tr>
+        <tr class="our"><td><strong>Pre-Execution Intercept</strong></td><td><span class="tick">&#10003;</span> Sub-50ms</td><td><span class="part">~</span> Moderate</td><td><span class="cross">&#10007;</span> Post-only</td><td><span class="cross">&#10007;</span> Post-only</td><td><span class="cross">&#10007;</span> Dev-time</td></tr>
+        <tr class="our"><td><strong>GAN Threat Simulation</strong></td><td><span class="tick">&#10003;</span> Proprietary</td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+        <tr class="our"><td><strong>Edge Governance</strong></td><td><span class="tick">&#10003;</span> Native</td><td><span class="cross">&#10007;</span> Cloud-only</td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+        <tr class="our"><td><strong>EU AI Act / DORA</strong></td><td><span class="tick">&#10003;</span> Built-in</td><td><span class="part">~</span> SOC2 only</td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+        <tr class="our"><td><strong>NHS DTAC UK</strong></td><td><span class="tick">&#10003;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+        <tr class="our"><td><strong>CoT Audit Ledger</strong></td><td><span class="tick">&#10003;</span> Immutable</td><td><span class="cross">&#10007;</span></td><td><span class="part">~</span> Partial</td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="g3 ain">
+    <div class="card card-rd"><div class="cic rd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div><h3>Palo Alto Prisma AI</h3><p style="margin-bottom:10px">Infrastructure DLP security. Lacks deep reasoning-analysis and CoT interception required to govern autonomous agent intent and logic chains in production.</p><span class="bdg rd">No Runtime Intercept</span></div>
+    <div class="card card-wn"><div class="cic wn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><h3>LangSmith (LangChain)</h3><p style="margin-bottom:10px">Post-hoc observability leader. Can tell you an agent failed -- cannot stop the failure as it happens. No runtime intervention or edge data sovereignty capabilities.</p><span class="bdg wn">Post-hoc Only</span></div>
+    <div class="card card-v"><div class="cic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>Arize AI (Phoenix)</h3><p style="margin-bottom:10px">Statistical ML drift detection. Agent drift is behavioural, requiring GAN-driven adversarial simulation beyond Arize's statistical monitoring capabilities.</p><span class="bdg v">Statistical Only</span></div>
+  </div>
+</div>
+
+<div class="page" id="pg-roadmap">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Roadmap</div><h1 class="stitle">Product Development Roadmap</h1><p class="ssub">A three-year strategic plan evolving from TRL-7 prototype to the global standard for autonomous agent governance, balancing technical excellence, enterprise security, and practical scalability.</p></div></div></div>
+  <div class="g3 ain" style="margin-bottom:18px">
+    <div class="card" style="background:linear-gradient(135deg,var(--dv2),var(--dv3));border-color:rgba(139,92,246,.4)">
+      <div style="font-family:var(--fm);font-size:.4rem;color:var(--v6);text-transform:uppercase;letter-spacing:.16em;margin-bottom:8px">Year 1 - 2026</div>
+      <h3 style="color:#fff;margin-bottom:11px">Foundation and Validation</h3>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&#10003;</span>Finalise Transformer intent engine and GAN simulator</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&#10003;</span>Edge Container and Autonomy Envelope integration</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--v6);flex-shrink:0">&gt;</span>ISO 27001 and Cyber Essentials Plus initiation</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--v6);flex-shrink:0">&gt;</span>Secure 60 institutional early adopters</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--v6);flex-shrink:0">&gt;</span>Commercial SaaS launch (Month 7)</div>
+      </div>
+      <div style="margin-top:12px"><span class="bdg v">&#163;74K Revenue</span></div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#1e0a3c,#2e1050);border-color:rgba(168,85,247,.4)">
+      <div style="font-family:var(--fm);font-size:.4rem;color:var(--p4);text-transform:uppercase;letter-spacing:.16em;margin-bottom:8px">Year 2 - 2027</div>
+      <h3 style="color:#fff;margin-bottom:11px">Scale and Diversification</h3>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--p4);flex-shrink:0">&gt;</span>Launch Trust Analytics Dashboard (SaaS)</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--p4);flex-shrink:0">&gt;</span>GAN scenarios to 100K+ monthly</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--p4);flex-shrink:0">&gt;</span>HITL Automation (95% oversight reduction)</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--p4);flex-shrink:0">&gt;</span>NHS Digital and Healthcare sector launch</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--p4);flex-shrink:0">&gt;</span>EU expansion: Germany, France, Benelux</div>
+      </div>
+      <div style="margin-top:12px"><span class="bdg p">&#163;315K Revenue</span></div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#042f2e,#0d4f4c);border-color:rgba(20,184,166,.4)">
+      <div style="font-family:var(--fm);font-size:.4rem;color:var(--t3);text-transform:uppercase;letter-spacing:.16em;margin-bottom:8px">Year 3 - 2028</div>
+      <h3 style="color:#fff;margin-bottom:11px">Global Leadership</h3>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&gt;</span>Advanced Multi-Agent Trust Protocols</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&gt;</span>WIPO/PCT patent filings for core tech</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&gt;</span>Self-Healing Policies R&amp;D initiative</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&gt;</span>US (NIST) and Asian market adaptation</div>
+        <div style="display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.82)"><span style="color:var(--t3);flex-shrink:0">&gt;</span>AI Safety and Trust Research Unit UK</div>
+      </div>
+      <div style="margin-top:12px"><span class="bdg ok">&#163;1.03M Revenue</span></div>
+    </div>
+  </div>
+  <div class="cp ain"><div class="cp-h"><span class="cp-t">User Acquisition and Revenue Growth (5-Year)</span><span class="bdg v">Dual Axis</span></div><div class="cw t"><canvas id="chartUsers"></canvas></div></div>
+</div>
+
+<div class="page" id="pg-compliance">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge ok">Compliance</div><h1 class="stitle">Compliance and IPR Strategy</h1><p class="ssub">AutonomyGovernanceHub is engineered compliance-by-design with full alignment to EU AI Act 2024, DORA, GDPR, ISO 42001, and NHS DTAC. Compliance is a core product feature, not an afterthought.</p></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc ok"><div class="sv ok">6</div><div class="sd">Active Regulatory Frameworks</div></div>
+    <div class="sc v"><div class="sv v">5</div><div class="sd">Patents Pending</div></div>
+    <div class="sc p"><div class="sv p">Q2 2026</div><div class="sd">UKCA/CE Approval Target</div></div>
+    <div class="sc t"><div class="sv t">100%</div><div class="sd">Data Sovereignty Guarantee</div></div>
+  </div>
+  <div class="g2 ain">
+    <div><h3 style="margin-bottom:13px">Regulatory Compliance Status</h3>
+      <div class="comp-list">
+        <div class="comp-item"><div class="comp-ic ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="comp-body"><div class="comp-name">EU AI Act 2024 (High-Risk Systems)</div><div class="comp-desc">Full coverage: risk management, explainability, human oversight, automated DPIA generation and Article 13 compliance via the Trust Ledger.</div></div><span class="comp-status ok">Aligned</span></div>
+        <div class="comp-item"><div class="comp-ic ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div class="comp-body"><div class="comp-name">DORA (Digital Operational Resilience Act)</div><div class="comp-desc">Incident reporting, third-party risk management, digital resilience testing for UK and EU financial institutions under 2025 enforcement.</div></div><span class="comp-status ok">Aligned</span></div>
+        <div class="comp-item"><div class="comp-ic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="comp-body"><div class="comp-name">GDPR (UK and EU)</div><div class="comp-desc">Privacy-by-Design and Zero-Trust approach. All CoT logs anonymised, encrypted, and processed within the client perimeter. ICO-compliant.</div></div><span class="comp-status ok">Compliant</span></div>
+        <div class="comp-item"><div class="comp-ic t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="comp-body"><div class="comp-name">ISO/IEC 42001 (AI Management System)</div><div class="comp-desc">International standard for managing AI responsibly. Agentic Drift and Contextual Hallucinations captured per global best practice framework.</div></div><span class="comp-status ip">In Progress</span></div>
+        <div class="comp-item"><div class="comp-ic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="comp-body"><div class="comp-name">ISO/IEC 27001 (Information Security)</div><div class="comp-desc">ISMS governing all data-handling procedures for agent identities and audit logs. Full certification targeted Q1 2026.</div></div><span class="comp-status ip">In Progress</span></div>
+        <div class="comp-item"><div class="comp-ic ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="comp-body"><div class="comp-name">NHS DTAC (Digital Technology Assessment Criteria)</div><div class="comp-desc">Pre-aligned for NHS Digital deployments. Clinical AI governance, patient data protection, HIPAA compliance, and UK Data Protection law.</div></div><span class="comp-status ok">Pre-aligned</span></div>
+      </div>
+    </div>
+    <div><h3 style="margin-bottom:13px">IPR Protection Pipeline</h3>
+      <div class="comp-list">
+        <div class="comp-item"><div class="comp-ic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="comp-body"><div class="comp-name">Patent 1: Runtime Trust Orchestration Control Plane</div><div class="comp-desc">Protects the pre-execution Autonomy Envelope interception mechanism, the core differentiator from all market competitors globally.</div></div><span class="comp-status ip">Q3 2026</span></div>
+        <div class="comp-item"><div class="comp-ic p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div class="comp-body"><div class="comp-name">Patent 2: Replayable Trust Ledger and Reasoning Capture</div><div class="comp-desc">Multi-modal logging framework transforming non-deterministic agent behaviour into forensic-grade, immutable audit trails.</div></div><span class="comp-status ip">Q3 2026</span></div>
+        <div class="comp-item"><div class="comp-ic t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="comp-body"><div class="comp-name">Patent 3: Risk-Adaptive Permissioning Engine</div><div class="comp-desc">Real-time recalibration of agent operational boundaries based on task criticality and historical behavioural trajectories.</div></div><span class="comp-status ip">Draft 2026</span></div>
+        <div class="comp-item"><div class="comp-ic ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="comp-body"><div class="comp-name">Patent 4: GAN-Based Adversarial Policy Hardening</div><div class="comp-desc">Automated Red-Teaming where synthetic adversarial agents attempt to bypass guardrails, autonomously refining governance defences.</div></div><span class="comp-status ip">Draft 2026</span></div>
+        <div class="comp-item"><div class="comp-ic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div><div class="comp-body"><div class="comp-name">Patent 5: Federated Edge-Native Privacy Framework</div><div class="comp-desc">Local governance with encrypted centralised policy updates. GDPR and DORA native, designed for air-gapped environments.</div></div><span class="comp-status ip">Prep 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-financials">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Financials</div><h1 class="stitle">Financial Projections and Analysis</h1><p class="ssub">A high-growth SaaS trajectory driven by 98.5% gross margins, fully founder-funded at 50,000 GBP, cash-flow positive from Month 7, and scaling to 3.09M GBP revenue with 1.97M GBP cash reserves by Year 5 with zero external debt.</p></div><div class="sa"><span class="bdg ok">Cash+ from Month 7</span></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc t"><div class="sv t">98.5%</div><div class="sd">Gross Margin</div><div class="sn">Stable from Year 4</div></div>
+    <div class="sc v"><div class="sv v">&#163;50K</div><div class="sd">Total Investment</div><div class="sn">100% Founder Funded</div></div>
+    <div class="sc p"><div class="sv p">Month 7</div><div class="sd">Revenue Activation</div></div>
+    <div class="sc ok"><div class="sv ok">&#163;1.97M</div><div class="sd">Cash on Hand Year 5</div><div class="sn">Zero external debt</div></div>
+  </div>
+  <div class="g2 ain" style="margin-bottom:18px">
+    <div class="cp"><div class="cp-h"><span class="cp-t">5-Year Profit and Loss Summary</span><span class="bdg ok">GBP</span></div><div class="cw t"><canvas id="chartPL"></canvas></div></div>
+    <div class="cp"><div class="cp-h"><span class="cp-t">EBITDA Growth Trajectory</span><span class="bdg v">GBP</span></div><div class="cw t"><canvas id="chartEBITDA"></canvas></div></div>
+  </div>
+  <div class="cp ain" style="margin-bottom:18px"><div class="cp-h"><span class="cp-t">Cash on Hand -- Annual Position (Year 1 to 5)</span><span class="bdg t">No External Debt</span></div><div class="cw t"><canvas id="chartCash"></canvas></div></div>
+  <div class="g3 ain">
+    <div class="card card-v"><h3>Revenue Scaling</h3><div style="margin-top:10px;display:flex;flex-direction:column;gap:7px">
+      <div class="pi"><div class="ph"><span class="pl">Y1 - 74,660 GBP</span><span class="pp" style="color:var(--v3)">Launch</span></div><div class="pt"><div class="pf v" style="width:8%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y2 - 315,008 GBP</span><span class="pp" style="color:var(--v3)">+322%</span></div><div class="pt"><div class="pf v" style="width:22%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y3 - 1,037,771 GBP</span><span class="pp" style="color:var(--p1)">+229%</span></div><div class="pt"><div class="pf p" style="width:48%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y4 - 2,135,708 GBP</span><span class="pp" style="color:var(--t1)">+105%</span></div><div class="pt"><div class="pf t" style="width:72%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y5 - 3,095,305 GBP</span><span class="pp" style="color:var(--ok)">+44%</span></div><div class="pt"><div class="pf g" style="width:100%"></div></div></div>
+    </div></div>
+    <div class="card card-p"><h3>Cost Structure</h3><div style="margin-top:10px;display:flex;flex-direction:column;gap:7px">
+      <div class="pi"><div class="ph"><span class="pl">Salaries (primary)</span><span class="pp">36K to 1.55M GBP</span></div><div class="pt"><div class="pf v" style="width:85%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Marketing</span><span class="pp">4K to 89K GBP</span></div><div class="pt"><div class="pf p" style="width:40%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Cloud and API (COGS)</span><span class="pp">1.2K to 46K GBP</span></div><div class="pt"><div class="pf t" style="width:20%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Tech Subcontractors</span><span class="pp">0 to 234K GBP</span></div><div class="pt"><div class="pf g" style="width:30%"></div></div></div>
+    </div></div>
+    <div class="card card-t"><h3>Net Profit Margins</h3><div style="margin-top:10px;display:flex;flex-direction:column;gap:7px">
+      <div class="pi"><div class="ph"><span class="pl">Y1 - 17,096 GBP</span><span class="pp" style="color:var(--v3)">22.9%</span></div><div class="pt"><div class="pf v" style="width:23%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y2 - 93,165 GBP</span><span class="pp" style="color:var(--v3)">29.6%</span></div><div class="pt"><div class="pf v" style="width:30%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y3 - 193,735 GBP</span><span class="pp" style="color:var(--p1)">18.7%</span></div><div class="pt"><div class="pf p" style="width:19%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y4 - 530,495 GBP</span><span class="pp" style="color:var(--t1)">24.8%</span></div><div class="pt"><div class="pf t" style="width:25%"></div></div></div>
+      <div class="pi"><div class="ph"><span class="pl">Y5 - 793,176 GBP</span><span class="pp" style="color:var(--ok)">25.6%</span></div><div class="pt"><div class="pf g" style="width:26%"></div></div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="page" id="pg-team">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Team</div><h1 class="stitle">Team and HR Strategy</h1><p class="ssub">Founder-led technical excellence scaling from a 3-person core team in Year 1 to 38 global professionals by Year 5, hiring at the intersection of AI Security, enterprise infrastructure, and Regulatory Compliance.</p></div></div></div>
+  <div class="g4 ain" style="margin-bottom:18px">
+    <div class="sc v"><div class="sv v">3</div><div class="sd">Year 1 Team</div><div class="sn">Core Technical</div></div>
+    <div class="sc p"><div class="sv p">16</div><div class="sd">Year 3 Team</div><div class="sn">Scaling Operations</div></div>
+    <div class="sc t"><div class="sv t">38</div><div class="sd">Year 5 Team</div><div class="sn">Global Platform</div></div>
+    <div class="sc ok"><div class="sv ok">&#163;85K</div><div class="sd">Revenue per Employee Y4</div></div>
+  </div>
+  <div class="team-grid ain" style="margin-bottom:18px">
+    <div class="team-card"><div class="team-av" style="background:linear-gradient(135deg,#6d28d9,#9333ea)">AM</div><div class="team-name">Akhila Medisetti</div><div class="team-role">Founder and CEO</div><div class="team-bio">MSc Computer Science (Coventry University, UK). 2.5+ years as Senior Project Engineer at Wipro. Deep expertise in Citrix VDI administration, Azure IAAS, and ITIL infrastructure management for global Swiss banks across APAC, EMEA, and AMER.</div></div>
+    <div class="team-card"><div class="team-av" style="background:linear-gradient(135deg,#0d9488,#2dd4bf)">SD</div><div class="team-name">Senior Developer (Y1)</div><div class="team-role">Lead Engineer</div><div class="team-bio">Focused on the low-latency gRPC intercept engine and core platform stability. Responsible for the zero-latency intercept engine and Trust Ledger, the foundational technical components of the Autonomy Envelope system.</div></div>
+    <div class="team-card"><div class="team-av" style="background:linear-gradient(135deg,#9333ea,#e879f9)">AI</div><div class="team-name">AI Security Expert (Y2)</div><div class="team-role">Adversarial ML Lead</div><div class="team-bio">Specialised in adversarial machine learning and Red-Teaming for autonomous agents. Leads the GAN-driven synthetic threat simulation pipeline and adversarial dataset curation for continuous safety hardening.</div></div>
+  </div>
+  <div class="g2 ain">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Team Growth by Role (Stacked)</span><span class="bdg v">Headcount</span></div><div class="cw t"><canvas id="chartTeam"></canvas></div></div>
+    <div class="card"><h3 style="margin-bottom:12px">Hiring Roadmap</h3>
+      <div class="af">
+        <div class="ai-item"><div class="adot ok"></div><div><div class="am">Year 1: CEO + PM + Senior Developer</div><div class="at">3 team - 24,887 GBP revenue/employee</div></div></div>
+        <div class="ai-item"><div class="adot v"></div><div><div class="am">Year 2: +Dev, +AI Expert, +Customer Support</div><div class="at">6 total - 52,501 GBP revenue/employee</div></div></div>
+        <div class="ai-item"><div class="adot p"></div><div><div class="am">Year 3: +3 Devs, +AI Expert, +Data, +4 Support</div><div class="at">16 total - 64,861 GBP revenue/employee</div></div></div>
+        <div class="ai-item"><div class="adot t"></div><div><div class="am">Year 4: +2 Devs, +AI, +Data, +3 Support</div><div class="at">25 total - 85,428 GBP revenue/employee</div></div></div>
+        <div class="ai-item"><div class="adot ok"></div><div><div class="am">Year 5: +2 Devs, +2 AI Experts, +6 Support</div><div class="at">38 total - 81,455 GBP revenue/employee</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-pricing">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge">Pricing</div><h1 class="stitle">Pricing Tiers and Revenue Model</h1><p class="ssub">Transparent, scalable pricing for institutions of all sizes -- 30 to 40% more cost-effective than traditional manual AI safety audits. No API key required, GitHub Pages compatible.</p></div></div></div>
+  <div class="price-grid ain" style="margin-bottom:18px">
+    <div class="price-card"><div class="price-tier">Basic</div><div class="price-val">&#163;199</div><div class="price-period">per month billed monthly</div>
+      <ul class="price-feats"><li>Real-time monitoring up to 5 agents</li><li>Basic dashboard and compliance logging</li><li>Standard DORA/EU AI Act reports</li><li>Email support (48hr response)</li><li>Cloud-based deployment</li></ul>
+      <button class="price-btn def" onclick="showToast('Basic Plan','Contact hello@autonomygovernancehub.co.uk to get started.')">Get Started</button>
+    </div>
+    <div class="price-card feat">
+      <div style="position:absolute;top:14px;right:14px"><span class="bdg v" style="background:rgba(139,92,246,.3);color:#fff;border-color:rgba(139,92,246,.5)">Most Popular</span></div>
+      <div class="price-tier">Professional</div><div class="price-val">&#163;499</div><div class="price-period">per month billed monthly</div>
+      <ul class="price-feats"><li>Full runtime enforcement + API access</li><li>Trust Analytics Dashboard for CSOs</li><li>Priority support (8hr response)</li><li>HITL escalation workflows</li><li>GAN-hardened guardrails included</li><li>SDK access for LangChain/AutoGen</li></ul>
+      <button class="price-btn prim" onclick="showToast('Professional Plan','A team member will contact you within 24 hours to arrange a pilot.')">Start Pilot</button>
+    </div>
+    <div class="price-card"><div class="price-tier">Enterprise</div><div class="price-val">&#163;1,000+</div><div class="price-period">per month custom pricing</div>
+      <ul class="price-feats"><li>Unlimited agent governance fleet</li><li>Full white-label deployment</li><li>Advanced adversarial testing reports</li><li>24/7 dedicated technical support</li><li>Edge deployment kit included</li><li>Multi-sector governance modules</li><li>Custom SLA and DPIA assistance</li></ul>
+      <button class="price-btn def" onclick="showToast('Enterprise','Our enterprise team will be in touch within 2 business hours.')">Contact Sales</button>
+    </div>
+  </div>
+  <div class="g2 ain">
+    <div class="cp"><div class="cp-h"><span class="cp-t">Annual Cost Comparison vs Alternatives</span><span class="bdg ok">30-40% Saving</span></div><div class="cw t"><canvas id="chartCost"></canvas></div></div>
+    <div class="card"><h3 style="margin-bottom:13px">Sector Add-On Modules</h3>
+      <div class="af">
+        <div class="ai-item"><div class="adot v"></div><div><div class="am">Finance/DORA Governance Module</div><div class="at">499 GBP/year - FCA + DORA guardrails</div></div></div>
+        <div class="ai-item"><div class="adot p"></div><div><div class="am">Healthcare/HIPAA Module</div><div class="at">399 GBP/year - NHS DTAC + HIPAA</div></div></div>
+        <div class="ai-item"><div class="adot t"></div><div><div class="am">Public Service Module</div><div class="at">299 GBP/year - G-Cloud compatible</div></div></div>
+        <div class="ai-item"><div class="adot ok"></div><div><div class="am">Edge Deployment Kit (One-Time)</div><div class="at">3,600 GBP incl. VAT - Hardware + 1yr licence</div></div></div>
+        <div class="ai-item"><div class="adot v"></div><div><div class="am">Institutional Training Package</div><div class="at">1,000 to 3,000 GBP/year - AI Safety Officers</div></div></div>
+        <div class="ai-item"><div class="adot p"></div><div><div class="am">Research Data Licence</div><div class="at">2,000 to 5,000 GBP/year - Adversarial datasets</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-risk">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge wn">Risk and SWOT</div><h1 class="stitle">Risk Assessment and SWOT Analysis</h1><p class="ssub">A comprehensive risk framework identifying key threats and mitigation strategies in place to navigate the rapidly evolving AI safety and regulatory landscape with confidence.</p></div></div></div>
+  <div class="swot ain" style="margin-bottom:18px">
+    <div class="sw-q"><div class="sw-label">Strengths</div><ul class="sw-list">
+      <li>Only UK-native runtime trust platform with no direct competitor in this space</li>
+      <li>Proprietary GAN adversarial dataset creates an insurmountable data moat globally</li>
+      <li>Sub-50ms interception exceeds all observable market alternatives</li>
+      <li>Built-in EU AI Act, DORA, ISO 42001 compliance from day one by design</li>
+      <li>Founder enterprise infrastructure domain expertise from Wipro and Swiss banking</li>
+    </ul></div>
+    <div class="sw-q"><div class="sw-label">Weaknesses</div><ul class="sw-list">
+      <li>Early-stage market category requires significant educational selling effort</li>
+      <li>High GPU compute costs for continuous GAN training cycles at scale</li>
+      <li>Founder-centric technical dependency in Year 1 pre-hiring phase</li>
+      <li>Scaling governance templates for every enterprise API workflow is complex</li>
+      <li>Brand recognition gap versus established global cybersecurity incumbents</li>
+    </ul></div>
+    <div class="sw-q"><div class="sw-label">Opportunities</div><ul class="sw-list">
+      <li>EU AI Act and DORA 2025 enforcement creates massive, urgent market demand</li>
+      <li>Agentic AI adoption projected at 40% CAGR through 2030 globally</li>
+      <li>UK AI Safety Institute funding and R&amp;D collaboration pathways available</li>
+      <li>NHS Digital AI governance mandate creates immediate healthcare sector demand</li>
+      <li>Global expansion into US NIST and Asian regulatory markets in Year 3</li>
+    </ul></div>
+    <div class="sw-q"><div class="sw-label">Threats</div><ul class="sw-list">
+      <li>Palo Alto Networks or Microsoft could integrate runtime intercept capabilities</li>
+      <li>Rapidly shifting LLM landscape requires constant high-speed R&amp;D reinvestment</li>
+      <li>Enterprise adoption inertia and hesitancy to trust automated governance layers</li>
+      <li>Conflicting UK/EU/US regulatory standards increase localisation cost</li>
+      <li>Platform itself could become a high-value cybersecurity attack target in production</li>
+    </ul></div>
+  </div>
+  <div class="cp ain"><div class="cp-h"><span class="cp-t">Risk Register -- 8 Active Risks Monitored</span><span class="bdg wn">Quarterly Review</span></div>
+    <div style="overflow-x:auto"><table class="rtbl">
+      <thead><tr><th>Risk</th><th>Description</th><th>Impact</th><th>Probability</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td>Competition</td><td>Global cybersecurity incumbents integrate runtime intercept</td><td><span class="rl-h">High</span></td><td><span class="rl-m">Medium</span></td><td>GAN data moat + UK regulatory lead</td></tr>
+        <tr><td>Product Imitation</td><td>Startups replicate trust-scoring or GAN simulation logic</td><td><span class="rl-m">Medium</span></td><td><span class="rl-m">Medium</span></td><td>UKIPO + PCT patents and trade secrets</td></tr>
+        <tr><td>Data Privacy</td><td>Agent CoT reasoning poses GDPR/DORA breach risk</td><td><span class="rl-h">High</span></td><td><span class="rl-l">Low</span></td><td>Edge sovereignty containers and AES-256</td></tr>
+        <tr><td>Tech Development</td><td>Sub-50ms latency with complex reasoning may face hurdles</td><td><span class="rl-h">High</span></td><td><span class="rl-m">Medium</span></td><td>Model distillation and Coventry University</td></tr>
+        <tr><td>Dataset Scarcity</td><td>Authentic agent failure mode data is historically limited</td><td><span class="rl-m">Medium</span></td><td><span class="rl-m">Medium</span></td><td>GAN synthetic generation and community</td></tr>
+        <tr><td>Financial</td><td>High GPU R&amp;D costs during pre-revenue phase</td><td><span class="rl-m">Medium</span></td><td><span class="rl-l">Low</span></td><td>Innovate UK grants and contingency buffer</td></tr>
+        <tr><td>Regulatory Fluidity</td><td>Conflicting UK/EU/US standards increase development costs</td><td><span class="rl-m">Medium</span></td><td><span class="rl-l">Low</span></td><td>Language-agnostic architecture and modular compliance</td></tr>
+        <tr><td>Supply Chain</td><td>GPU node shortages could delay pilot rollout schedule</td><td><span class="rl-m">Medium</span></td><td><span class="rl-l">Low</span></td><td>Multi-region sourcing and ARM/x86 resilience</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="page" id="pg-demo">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge ok">Live</div><h1 class="stitle">AutonomyGovernanceHub -- AI Intelligence Demo</h1><p class="ssub">Interact with our runtime governance intelligence console. Ask about agentic drift, DORA compliance, trust orchestration, pricing, or our technology. No API key required -- fully static and GitHub Pages compatible.</p></div></div></div>
+  <div class="g32 ain">
+    <div class="demo-wrap">
+      <div class="demo-bar"><div class="demo-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div><span class="demo-title">AutonomyGovernanceHub - Runtime Intelligence Console - Autonomy Envelope Active</span><span class="bdg ok" style="margin-left:auto">LIVE</span></div>
+      <div class="demo-body">
+        <div class="demo-chips">
+          <div class="dchip" onclick="sendMsg(this.textContent)">What is agentic drift?</div>
+          <div class="dchip" onclick="sendMsg(this.textContent)">How does DORA compliance work?</div>
+          <div class="dchip" onclick="sendMsg(this.textContent)">Explain the Autonomy Envelope</div>
+          <div class="dchip" onclick="sendMsg(this.textContent)">What makes you different from LangSmith?</div>
+          <div class="dchip" onclick="sendMsg(this.textContent)">Tell me about GAN threat simulation</div>
+          <div class="dchip" onclick="sendMsg(this.textContent)">What is your pricing?</div>
+        </div>
+        <div class="chat-area" id="chat">
+          <div class="msg bot"><div class="msg-av">AG</div><div><div class="msg-bubble">Hello. I am the AutonomyGovernanceHub intelligence console. I can answer questions about AI agent security, DORA and EU AI Act compliance, our technology architecture, GAN-driven hardening, or how our platform prevents agentic drift. How can I assist you today?</div><div class="msg-ts">AutonomyGovernanceHub - Runtime Trust Intelligence - Now</div></div></div>
+        </div>
+        <div id="typing-row" style="display:none;margin-bottom:10px">
+          <div class="msg bot"><div class="msg-av">AG</div><div class="typing" id="typing-dots"><span></span><span></span><span></span></div></div>
+        </div>
+        <div class="demo-inp-row">
+          <input class="demo-inp" id="demoInp" type="text" placeholder="Ask about agent governance, DORA compliance, GAN simulation, pricing..." onkeypress="if(event.key==='Enter')sendMsg()"/>
+          <button class="demo-send" onclick="sendMsg()">Send</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card"><h3 style="margin-bottom:10px">Platform Metrics -- Live</h3>
+        <div class="pi"><div class="ph"><span class="pl">Guardrail Accuracy</span><span class="pp" style="color:var(--ok)">94.2%</span></div><div class="pt"><div class="pf g" style="width:94%"></div></div></div>
+        <div class="pi"><div class="ph"><span class="pl">Intercept Latency Avg</span><span class="pp" style="color:var(--v3)">43ms</span></div><div class="pt"><div class="pf v" style="width:86%"></div></div></div>
+        <div class="pi"><div class="ph"><span class="pl">Platform Uptime</span><span class="pp" style="color:var(--ok)">99.99%</span></div><div class="pt"><div class="pf g" style="width:99%"></div></div></div>
+        <div class="pi"><div class="ph"><span class="pl">Daily Agent Interactions</span><span class="pp" style="color:var(--t1)">50K+</span></div><div class="pt"><div class="pf t" style="width:75%"></div></div></div>
+      </div>
+      <div class="card"><h3 style="margin-bottom:10px">Recent Intercept Events</h3>
+        <div class="af">
+          <div class="ai-item"><div class="adot rd"></div><div><div class="am">Prompt injection blocked -- Banking agent</div><div class="at">2s ago - SQL exfiltration attempt - Blocked</div></div></div>
+          <div class="ai-item"><div class="adot wn"></div><div><div class="am">Agentic drift detected -- IT Ops agent</div><div class="at">14s ago - Escalated to HITL - Resolved</div></div></div>
+          <div class="ai-item"><div class="adot ok"></div><div><div class="am">Policy evaluation passed -- NHS agent</div><div class="at">28s ago - Patient data query - Approved</div></div></div>
+          <div class="ai-item"><div class="adot v"></div><div><div class="am">Trust score updated -- Finance agent</div><div class="at">45s ago - GAN model refresh - Complete</div></div></div>
+        </div>
+      </div>
+      <div class="card card-dk"><h3 style="color:#fff;margin-bottom:7px">Ready to Deploy?</h3><p style="font-size:.75rem;margin-bottom:12px">Start with a 30-day pilot in your VDI or cloud environment. No hardware required for Basic or Professional tiers.</p><button class="hbp" style="width:100%" onclick="nav('contact',null)">Request Pilot Access</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-contact">
+  <div class="sh ain"><div class="sh-row"><div><div class="sbadge t">Contact</div><h1 class="stitle">Contact and Partnership Enquiries</h1><p class="ssub">Connect with the AutonomyGovernanceHub team for pilot programmes, institutional partnerships, investor relations, or research collaboration with UK universities and AI safety bodies.</p></div></div></div>
+  <div class="g32 ain">
+    <div class="card"><h3 style="margin-bottom:18px">Send an Enquiry</h3>
+      <div class="g2">
+        <div class="frow"><label class="flbl">Full Name</label><input class="finp" type="text" placeholder="Your name" id="f-name"/></div>
+        <div class="frow"><label class="flbl">Organisation</label><input class="finp" type="text" placeholder="Company / Institution" id="f-org"/></div>
+      </div>
+      <div class="frow"><label class="flbl">Email Address</label><input class="finp" type="email" placeholder="your@email.com" id="f-email"/></div>
+      <div class="frow"><label class="flbl">Enquiry Type</label><select class="finp fsel" id="f-type"><option value="">Select enquiry type...</option><option>Pilot Programme Request</option><option>Institutional Partnership</option><option>Investor Relations</option><option>Research Collaboration</option><option>Enterprise Procurement</option><option>Media / Press</option><option>General Enquiry</option></select></div>
+      <div class="frow"><label class="flbl">Message</label><textarea class="finp ftxt" placeholder="Tell us about your use case, organisation size, or specific governance requirements..." id="f-msg"></textarea></div>
+      <button class="bp" style="width:100%;padding:12px" onclick="submitForm()">Send Enquiry</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card card-dk"><h3 style="color:#fff;margin-bottom:12px">Get in Touch</h3>
+        <div class="af">
+          <div class="ai-item" style="background:rgba(255,255,255,.05);border-color:rgba(139,92,246,.2)"><div class="adot v"></div><div><div class="am" style="color:var(--dvt)">Akhila Medisetti - Founder and CEO</div><div class="at">akhila@autonomygovernancehub.co.uk</div></div></div>
+          <div class="ai-item" style="background:rgba(255,255,255,.05);border-color:rgba(139,92,246,.2)"><div class="adot p"></div><div><div class="am" style="color:var(--dvt)">Pilot Programme Enquiries</div><div class="at">pilot@autonomygovernancehub.co.uk</div></div></div>
+          <div class="ai-item" style="background:rgba(255,255,255,.05);border-color:rgba(139,92,246,.2)"><div class="adot t"></div><div><div class="am" style="color:var(--dvt)">Investor Relations</div><div class="at">investors@autonomygovernancehub.co.uk</div></div></div>
+          <div class="ai-item" style="background:rgba(255,255,255,.05);border-color:rgba(139,92,246,.2)"><div class="adot ok"></div><div><div class="am" style="color:var(--dvt)">Research Partnerships</div><div class="at">research@autonomygovernancehub.co.uk</div></div></div>
+        </div>
+      </div>
+      <div class="card"><h3 style="margin-bottom:12px">Strategic Ecosystem Partners</h3>
+        <div class="af">
+          <div class="ai-item"><div class="adot v"></div><div><div class="am">UK AI Safety Institute</div><div class="at">National-scale deployment frameworks</div></div></div>
+          <div class="ai-item"><div class="adot p"></div><div><div class="am">Coventry University AI Labs</div><div class="at">Founder alma mater - R&amp;D collaboration</div></div></div>
+          <div class="ai-item"><div class="adot t"></div><div><div class="am">The Alan Turing Institute</div><div class="at">AI safety benchmarking partnership</div></div></div>
+          <div class="ai-item"><div class="adot ok"></div><div><div class="am">Imperial College London</div><div class="at">Cybersecurity research collaboration</div></div></div>
+          <div class="ai-item"><div class="adot v"></div><div><div class="am">NHS Digital / DTAC Programme</div><div class="at">Healthcare AI governance</div></div></div>
+          <div class="ai-item"><div class="adot p"></div><div><div class="am">DASA (Defence and Security Accelerator)</div><div class="at">Sovereign AI for UK Defence</div></div></div>
+        </div>
+      </div>
+      <div class="card"><h3 style="margin-bottom:10px">Target Pilot Sectors</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px"><span class="bdg v">Tier-1 Banks</span><span class="bdg p">NHS Trusts</span><span class="bdg ok">UK Gov Depts</span><span class="bdg t">MSPs</span><span class="bdg v">Insurers</span><span class="bdg p">Fintechs</span><span class="bdg ok">Defence</span><span class="bdg t">E-commerce</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /mi -->
+
+<footer class="footer">
+  <div class="f-cta-bar">
+    <div><div class="f-cta-txt">Ready to Govern Your Autonomous AI Agents?</div><div class="f-cta-sub">Join the waitlist for our TRL-7 pilot programme launching Q3 2026 - UK-first - Dark Violet + Light Violet Design</div></div>
+    <div class="f-cta-btns">
+      <button class="f-btn-prim" onclick="nav('contact',null)">Request Pilot Access</button>
+      <button class="f-btn-ghost" onclick="nav('demo',null)">Try Live Demo</button>
+    </div>
+  </div>
+  <div class="f-main">
+    <div>
+      <div class="f-logo-row"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="f-nm"><em>Autonomy</em>Governance<em>Hub</em></div></div>
+      <p class="f-desc">The UK's first AI-native Runtime Trust Orchestration Platform for autonomous enterprise agents. Bridging the Governance Gap with real-time intercept, GAN-driven hardening, and built-in EU AI Act, DORA, ISO 42001, and NHS DTAC compliance.</p>
+      <div class="f-certs"><span class="f-cert">EU AI Act 2024</span><span class="f-cert">DORA Aligned</span><span class="f-cert">ISO 42001</span><span class="f-cert">GDPR Native</span><span class="f-cert">NHS DTAC</span><span class="f-cert">TRL-7</span></div>
+      <div style="font-family:var(--fm);font-size:.42rem;color:var(--dvt3);line-height:1.7;padding:9px 11px;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12);border-radius:var(--r)"><strong style="color:rgba(255,255,255,.6)">Founded by Akhila Medisetti</strong> - MSc Computer Science, Coventry University UK - Former Senior Project Engineer, Wipro - Citrix VDI and Azure IAAS Expert - Founder-funded 50,000 GBP</div>
+    </div>
+    <div><div class="f-col-head">Platform</div><ul class="f-links"><li><a href="#" onclick="nav('overview',null)">Dashboard Overview</a></li><li><a href="#" onclick="nav('solution',null)">Our Solution</a></li><li><a href="#" onclick="nav('technology',null)">Technology Stack</a></li><li><a href="#" onclick="nav('innovation',null)">Innovation and IP</a></li><li><a href="#" onclick="nav('demo',null)">Live AI Demo</a></li></ul></div>
+    <div><div class="f-col-head">Business</div><ul class="f-links"><li><a href="#" onclick="nav('market',null)">Market Analysis</a></li><li><a href="#" onclick="nav('businessmodel',null)">Business Model</a></li><li><a href="#" onclick="nav('roadmap',null)">Product Roadmap</a></li><li><a href="#" onclick="nav('financials',null)">Financials</a></li><li><a href="#" onclick="nav('pricing',null)">Pricing Tiers</a></li></ul></div>
+    <div><div class="f-col-head">Company</div><ul class="f-links"><li><a href="#" onclick="nav('team',null)">Team and HR</a></li><li><a href="#" onclick="nav('compliance',null)">Compliance and IPR</a></li><li><a href="#" onclick="nav('competitor',null)">Competitor Analysis</a></li><li><a href="#" onclick="nav('risk',null)">Risk and SWOT</a></li><li><a href="#" onclick="nav('contact',null)">Contact Us</a></li></ul></div>
+    <div>
+      <div class="f-nl-head">Stay Updated</div>
+      <p class="f-nl-sub">Receive updates on our pilot programme, regulatory news, and AgentOps research from the UK.</p>
+      <div class="f-nl-form"><input type="email" placeholder="your@email.com" id="nl-email"/><button onclick="subscribeNL()">Subscribe</button></div>
+      <div style="padding:10px 12px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.18);border-radius:var(--r)"><div style="font-family:var(--fm);font-size:.41rem;color:var(--v6);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">Investment and Grants</div><div style="font-size:.71rem;color:rgba(255,255,255,.62);line-height:1.6">Seed-funded by founder 50,000 GBP. Applying Innovate UK AI Safety grants. Cash-flow positive Month 7. Zero external debt.</div></div>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <div class="f-copy">Copyright 2026 AutonomyGovernanceHub Ltd. | Registered in England and Wales | Coventry, United Kingdom | CONFIDENTIAL</div>
+    <div class="f-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">GDPR Notice</a></div>
+    <div class="f-soc"><div class="f-s">in</div><div class="f-s">GH</div><div class="f-s">X</div></div>
+  </div>
+</footer>
+</div></div>
+
+<div class="toast" id="toast">
+  <div class="toast-ic" id="toast-ic" style="background:var(--okl);border-color:var(--okb);color:var(--ok)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+  <div><div class="toast-title" id="toast-title">Success</div><div class="toast-msg" id="toast-msg"></div></div>
+  <div class="toast-x" onclick="closeToast()">&#x2715;</div>
+</div>
+
+<script>
+// NAV
+function nav(id, el) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  var t = document.getElementById('pg-' + id);
+  if (t) {
+    t.classList.add('active');
+    setTimeout(function() {
+      t.querySelectorAll('.ain').forEach(function(e, i) {
+        setTimeout(function() { e.classList.add('v'); }, i * 90);
+      });
+    }, 50);
+  }
+  document.querySelectorAll('.sb-item').forEach(function(i) { i.classList.remove('active'); });
+  if (el) {
+    el.classList.add('active');
+  } else {
+    document.querySelectorAll('.sb-item').forEach(function(item) {
+      var oc = item.getAttribute('onclick') || '';
+      if (oc.indexOf("'" + id + "'") > -1) item.classList.add('active');
+    });
+  }
+  var mi = document.querySelector('.mi');
+  if (mi) mi.scrollTop = 0;
+  drawCharts(id);
+}
+
+function navM(id, el, name) {
+  nav(id, null);
+  document.querySelectorAll('.dr-item').forEach(function(i) { i.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  var pg = document.getElementById('mob-pg-name');
+  if (pg) pg.textContent = name;
+  closeDrawer();
+}
+
+function toggleDrawer() {
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('drov').classList.toggle('open');
+  document.getElementById('mhbtn').classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drov').classList.remove('open');
+  document.getElementById('mhbtn').classList.remove('open');
+}
+
+// TOAST
+var toastT;
+function showToast(title, msg, type) {
+  if (!type) type = 'ok';
+  clearTimeout(toastT);
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  var ic = document.getElementById('toast-ic');
+  if (type === 'ok') { ic.style.background='var(--okl)'; ic.style.borderColor='var(--okb)'; ic.style.color='var(--ok)'; }
+  else if (type === 'wn') { ic.style.background='var(--wnl)'; ic.style.borderColor='var(--wnb)'; ic.style.color='var(--wn)'; }
+  else { ic.style.background='var(--rdl)'; ic.style.borderColor='var(--rdb)'; ic.style.color='var(--rd)'; }
+  document.getElementById('toast').classList.add('show');
+  toastT = setTimeout(closeToast, 4000);
+}
+function closeToast() { document.getElementById('toast').classList.remove('show'); }
+
+function submitForm() {
+  var n = document.getElementById('f-name').value;
+  var e = document.getElementById('f-email').value;
+  if (!n || !e) { showToast('Required Fields', 'Please fill in your name and email address.', 'wn'); return; }
+  showToast('Enquiry Received', 'Thank you! Our team will respond within 2 business hours.');
+  ['f-name','f-org','f-email','f-msg'].forEach(function(id) { document.getElementById(id).value = ''; });
+}
+function subscribeNL() {
+  var e = document.getElementById('nl-email').value;
+  if (!e || e.indexOf('@') < 0) { showToast('Invalid Email', 'Please enter a valid email address.', 'wn'); return; }
+  showToast('Subscribed', 'You will receive updates on our pilot programme and AgentOps research.');
+  document.getElementById('nl-email').value = '';
+}
+
+// AI DEMO - plain ASCII strings only
+var R = {
+  drift: "Agentic Drift is when autonomous AI agents gradually deviate from their intended objectives due to model updates, context poisoning, or evolving data distributions.\n\nAutonomyGovernanceHub addresses this through our Automated Drift Detection module, which continuously compares live agent behaviour against safety baseline profiles, catching deviations before they become production failures. Our GAN-driven synthetic training generates 10,000+ scenarios monthly that simulate drift patterns, enabling the governance model to recognise and intercept them in real-time with 94.2% accuracy.",
+  dora: "The Digital Operational Resilience Act (DORA) came into full enforcement in 2025 and mandates that UK and EU financial institutions ensure their AI-driven automation workflows do not compromise system integrity.\n\nAutonomyGovernanceHub is designed specifically for DORA compliance. Our Finance/DORA Governance Module includes pre-configured guardrails preventing autonomous agents from triggering unauthorised market transactions. The Replayable Trust Ledger provides forensic-grade audit trails required for DORA regulatory reporting. Our edge-native architecture ensures all sensitive reasoning data stays within the UK client perimeter -- meeting DORA data residency requirements.",
+  envelope: "The Autonomy Envelope is AutonomyGovernanceHub's proprietary runtime control boundary -- a dynamic, context-aware safety perimeter surrounding every AI agent interaction.\n\nIt evaluates each agent intent (API calls, SQL queries, system commands) against predefined safety policies BEFORE execution. Unlike static firewalls at the network level, the Autonomy Envelope operates at the reasoning layer -- understanding WHY an agent is attempting an action, not just WHAT it is attempting.\n\nIf an agent's Chain-of-Thought reasoning suggests a high-risk action outside its safety profile, the Envelope intercepts and blocks, modifies, or escalates to a human supervisor -- all in under 50 milliseconds.",
+  langsmith: "LangSmith by LangChain is a post-hoc observability tool -- it records what your AI agents did after execution. Excellent for debugging failed agentic workflows, but it cannot prevent failures in real-time.\n\nAutonomyGovernanceHub is fundamentally different: we are a pre-execution runtime intercept system. We evaluate agent reasoning chains BEFORE the action executes, blocking unsafe actions at machine speed.\n\nAdditionally: GAN-driven adversarial simulation, edge-native data sovereignty, built-in EU AI Act and DORA compliance, and NHS DTAC alignment. LangSmith was built for developers debugging during development -- we govern autonomous agents in live production at enterprise scale.",
+  gan: "Our Generative Adversarial Networks Synthetic Threat Engine is one of our most significant technical innovations. It addresses a critical challenge: there is very little historical data on how autonomous agents fail in enterprise environments.\n\nOur GAN works by pitting a red-team adversarial agent against our governance layer in a simulated environment. The adversarial agent continuously attempts to bypass guardrails using novel prompt injection techniques, logic manipulation, and agentic collusion patterns.\n\nThis generates 10,000+ unique adversarial scenarios monthly, creating a proprietary failure-mode dataset that forms an insurmountable competitive moat -- evolving faster than real-world threats.",
+  pricing: "AutonomyGovernanceHub offers three tiers:\n\nBasic: 199 GBP/month -- Up to 5 agents, dashboard, compliance logging. Ideal for pilots.\n\nProfessional: 499 GBP/month -- Full runtime enforcement, API access, HITL workflows, SDK access for LangChain/AutoGen.\n\nEnterprise: 1,000+ GBP/month -- Unlimited agents, white-label deployment, 24/7 support, edge deployment kit.\n\nSector add-ons: Finance/DORA 499 GBP/yr, Healthcare/HIPAA 399 GBP/yr, Public Service 299 GBP/yr. Edge kits at 3,600 GBP incl. VAT. Our platform delivers governance at approximately 15% of the cost of equivalent manual AI safety audits.",
+  default: "Thank you for your question. AutonomyGovernanceHub is a runtime trust and orchestration platform that intercepts and evaluates AI agent reasoning chains before execution -- preventing data exfiltration, unauthorised system access, and agentic drift in real-time with sub-50ms latency.\n\nBuilt for UK and EU enterprises operating under DORA, the EU AI Act 2024, ISO 42001, and NHS DTAC. Key capabilities: runtime intercept, Chain-of-Thought auditing, GAN adversarial hardening, edge-native data sovereignty, and Risk-Adaptive HITL.\n\nCould you tell me more about your specific use case? Are you looking to govern agents in banking, healthcare, IT operations, or government environments?"
+};
+
+function getReply(q) {
+  var l = q.toLowerCase();
+  if (l.indexOf('drift') > -1 || l.indexOf('agentic') > -1) return R.drift;
+  if (l.indexOf('dora') > -1 || l.indexOf('compliance') > -1 || l.indexOf('regulation') > -1 || l.indexOf('eu ai') > -1) return R.dora;
+  if (l.indexOf('envelope') > -1 || l.indexOf('guardrail') > -1 || l.indexOf('intercept') > -1) return R.envelope;
+  if (l.indexOf('langsmith') > -1 || l.indexOf('different') > -1 || l.indexOf('compare') > -1 || l.indexOf('langchain') > -1) return R.langsmith;
+  if (l.indexOf('gan') > -1 || l.indexOf('adversarial') > -1 || l.indexOf('simulation') > -1) return R.gan;
+  if (l.indexOf('pric') > -1 || l.indexOf('cost') > -1 || l.indexOf('tier') > -1) return R.pricing;
+  if (l.indexOf('hello') > -1 || l.indexOf('hi ') > -1 || l.indexOf('hey') > -1) return "Hello! I am the AutonomyGovernanceHub AI console. Ask me about agentic drift, DORA compliance, our GAN threat simulation, pricing, or how we compare to LangSmith and Arize AI.";
+  if (l.indexOf('founder') > -1 || l.indexOf('akhila') > -1 || l.indexOf('team') > -1) return "AutonomyGovernanceHub was founded by Akhila Medisetti, MSc Computer Science (Coventry University, UK). She brings 2.5+ years as Senior Project Engineer at Wipro with deep expertise in Citrix VDI administration, Azure IAAS, and ITIL infrastructure management for global Swiss banks across APAC, EMEA, and AMER. Recognising the Governance Gap during her enterprise tenure, she developed the vision for a Digital Air Traffic Control for AI agents.";
+  if (l.indexOf('trl') > -1 || l.indexOf('prototype') > -1) return "AutonomyGovernanceHub has achieved TRL-7 (System Prototype Demonstration in Operational Environment). Our functional prototype can intercept and govern execution paths of autonomous agents in live enterprise environments.\n\nTesting confirms: 94% accuracy detecting unauthorised agent actions with under 45ms latency overhead, reliable operation across Azure, AWS, and hybrid-cloud architectures, and successful isolation of compromised or drifting agent sessions. We are nearing TRL-8 with multi-tenant SaaS architecture successfully tested.";
+  return R.default;
+}
+
+function addMsg(text, isUser) {
+  var chat = document.getElementById('chat');
+  var ts = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+  var d = document.createElement('div');
+  d.className = 'msg ' + (isUser ? 'user' : 'bot');
+  var lbl = isUser ? 'You' : 'AutonomyGovernanceHub';
+  var av = isUser ? 'U' : 'AG';
+  d.innerHTML = '<div class="msg-av">' + av + '</div><div><div class="msg-bubble">' + text.replace(/\n/g,'<br>') + '</div><div class="msg-ts">' + lbl + ' - ' + ts + '</div></div>';
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function sendMsg(preset) {
+  var inp = document.getElementById('demoInp');
+  var q = preset || inp.value.trim();
+  if (!q) return;
+  if (!preset) inp.value = '';
+  addMsg(q, true);
+  var tr = document.getElementById('typing-row');
+  var td = document.getElementById('typing-dots');
+  tr.style.display = 'block';
+  td.style.display = 'flex';
+  document.getElementById('chat').scrollTop = 99999;
+  setTimeout(function() {
+    tr.style.display = 'none';
+    addMsg(getReply(q), false);
+  }, 900 + Math.random() * 700);
+}
+
+// CHARTS
+var ci = {};
+var G = 'rgba(109,40,217,.07)', T = '#6b5ca5', F = 'Plus Jakarta Sans';
+var C = { v:'rgba(109,40,217,', p:'rgba(168,85,247,', t:'rgba(13,148,136,', ok:'rgba(5,150,105,', wn:'rgba(217,119,6,', rd:'rgba(220,38,38,' };
+
+function bO(leg) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: !!leg, labels: { color: T, font: { family: F, size: 11 } } },
+      tooltip: { backgroundColor: '#160b2e', titleColor: '#e2d9f3', bodyColor: '#b8a9d9', borderColor: 'rgba(139,92,246,.3)', borderWidth: 1, padding: 10 }
+    },
+    scales: {
+      x: { grid: { color: G }, ticks: { color: T, font: { family: F, size: 11 } } },
+      y: { grid: { color: G }, ticks: { color: T, font: { family: F, size: 11 } } }
+    }
+  };
+}
+
+function dc(id) { if (ci[id]) { try { ci[id].destroy(); } catch(e){} delete ci[id]; } }
+
+function drawCharts(pg) {
+  setTimeout(function() {
+
+    if (pg === 'overview') {
+      dc('chartRevenue'); dc('chartSector');
+      var c1 = document.getElementById('chartRevenue');
+      if (c1) ci.chartRevenue = new Chart(c1, { type:'bar', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'Revenue GBP', data:[74660,315008,1037771,2135708,3095305], backgroundColor:[C.v+'0.84)',C.v+'0.84)',C.p+'0.84)',C.t+'0.84)',C.ok+'0.88)'], borderRadius:7 },{ label:'Net Profit GBP', data:[17096,93165,193735,530495,793176], backgroundColor:C.v+'0.28)', borderRadius:4 }] }, options: bO(true) });
+      var c2 = document.getElementById('chartSector');
+      if (c2) ci.chartSector = new Chart(c2, { type:'doughnut', data:{ labels:['Enterprise IT','Banking','Retail','Healthcare','Gov'], datasets:[{ data:[90,56.25,85,20.65,8.64], backgroundColor:[C.v+'0.88)',C.p+'0.88)',C.t+'0.88)',C.ok+'0.88)',C.wn+'0.88)'], borderWidth:3, borderColor:'#faf8ff' }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ display:true, position:'right', labels:{ color:T, font:{ family:F, size:11 }, padding:14 } }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1, padding:10 } } } });
+    }
+
+    if (pg === 'problem') {
+      dc('chartGap');
+      var c = document.getElementById('chartGap');
+      if (c) ci.chartGap = new Chart(c, { type:'bar', data:{ labels:['Banking','Healthcare','Gov','IT Ops','E-commerce','Pharma'], datasets:[{ label:'Governance Gap Score', data:[92,88,95,85,70,78], backgroundColor:C.p+'0.82)', borderRadius:5 },{ label:'Current Coverage', data:[18,12,8,32,28,20], backgroundColor:C.ok+'0.72)', borderRadius:5 }] }, options: bO(true) });
+    }
+
+    if (pg === 'solution') {
+      dc('chartFlow');
+      var c = document.getElementById('chartFlow');
+      if (c) ci.chartFlow = new Chart(c, { type:'bar', data:{ labels:['Intent Detection','CoT Analysis','Policy Check','Risk Scoring','Enforcement','Trust Ledger'], datasets:[{ label:'ms', data:[8,14,6,9,4,6], backgroundColor:[C.v+'0.82)',C.p+'0.82)',C.t+'0.82)',C.ok+'0.82)',C.v+'0.82)',C.t+'0.82)'], borderRadius:5 }] }, options: Object.assign({ indexAxis:'y' }, bO()) });
+    }
+
+    if (pg === 'technology') {
+      dc('chartGAN'); dc('chartAccuracy');
+      var c1 = document.getElementById('chartGAN');
+      if (c1) ci.chartGAN = new Chart(c1, { type:'line', data:{ labels:['Q1 2025','Q2 2025','Q3 2025','Q4 2025','Q1 2026','Q2 2026'], datasets:[{ label:'Scenarios/Month', data:[1200,3500,6000,8500,10000,12000], borderColor:C.v+'0.9)', backgroundColor:C.v+'0.12)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5 }] }, options: bO() });
+      var c2 = document.getElementById('chartAccuracy');
+      if (c2) ci.chartAccuracy = new Chart(c2, { type:'radar', data:{ labels:['Banking/DORA','Healthcare','Gov','IT Ops','E-commerce','Prompt Inject'], datasets:[{ label:'Accuracy %', data:[96,94,92,97,89,95], backgroundColor:C.v+'0.2)', borderColor:C.v+'0.82)', pointBackgroundColor:C.v+'0.9)', borderWidth:2 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1 } }, scales:{ r:{ grid:{ color:'rgba(109,40,217,.12)' }, ticks:{ color:T, backdropColor:'transparent', font:{ size:10, family:F } }, pointLabels:{ color:T, font:{ size:11, family:F } }, min:80, max:100 } } } });
+    }
+
+    if (pg === 'innovation') {
+      dc('chartRadar');
+      var c = document.getElementById('chartRadar');
+      if (c) ci.chartRadar = new Chart(c, { type:'radar', data:{ labels:['Runtime Intercept','GAN Hardening','Edge Sovereignty','CoT Auditing','DORA/EU AI Act','Cross-Framework'], datasets:[{ label:'AutonomyGovernanceHub', data:[98,95,97,96,99,92], backgroundColor:C.v+'0.2)', borderColor:C.v+'0.88)', pointBackgroundColor:C.v+'0.9)', borderWidth:2.5 },{ label:'Best Competitor', data:[30,10,12,45,25,60], backgroundColor:C.rd+'0.1)', borderColor:C.rd+'0.6)', pointBackgroundColor:C.rd+'0.7)', borderWidth:1.5 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:true, labels:{ color:T, font:{ family:F, size:11 } } }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1 } }, scales:{ r:{ grid:{ color:'rgba(109,40,217,.12)' }, ticks:{ color:T, backdropColor:'transparent', font:{ size:10, family:F } }, pointLabels:{ color:T, font:{ size:11, family:F } }, min:0, max:100 } } } });
+    }
+
+    if (pg === 'market') {
+      dc('chartTAM'); dc('chartGlobalMarket');
+      var c1 = document.getElementById('chartTAM');
+      if (c1) ci.chartTAM = new Chart(c1, { type:'bar', data:{ labels:['Enterprise IT','Banking','Retail','Healthcare','Gov'], datasets:[{ label:'TAM GBP M/yr', data:[90,56.25,85,20.65,8.64], backgroundColor:[C.v+'0.87)',C.p+'0.87)',C.t+'0.87)',C.ok+'0.87)',C.wn+'0.87)'], borderRadius:6 }] }, options: bO() });
+      var c2 = document.getElementById('chartGlobalMarket');
+      if (c2) ci.chartGlobalMarket = new Chart(c2, { type:'line', data:{ labels:['2023','2024','2025','2026','2027','2028','2029','2030'], datasets:[{ label:'Global TRiSM USD Bn', data:[18.5,21.7,25.6,30.2,35.8,42.1,49.2,56.7], borderColor:C.v+'0.9)', backgroundColor:C.v+'0.1)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:4 },{ label:'AgentOps Sub-segment', data:[0.8,1.4,2.3,3.9,6.2,9.8,14.2,20.1], borderColor:C.t+'0.9)', backgroundColor:C.t+'0.08)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:4 }] }, options: bO(true) });
+    }
+
+    if (pg === 'businessmodel') {
+      dc('chartRevMix'); dc('chartARPU');
+      var c1 = document.getElementById('chartRevMix');
+      if (c1) ci.chartRevMix = new Chart(c1, { type:'pie', data:{ labels:['SaaS Subscriptions','API/SDK Licensing','Sector Modules','Edge Kits','Training','Data Licences'], datasets:[{ data:[58,20,10,6,4,2], backgroundColor:[C.v+'0.87)',C.p+'0.87)',C.t+'0.87)',C.ok+'0.87)',C.wn+'0.87)',C.rd+'0.72)'], borderWidth:3, borderColor:'#faf8ff' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:true, position:'bottom', labels:{ color:T, font:{ family:F, size:11 }, padding:12 } }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1, padding:10 } } } });
+      var c2 = document.getElementById('chartARPU');
+      if (c2) ci.chartARPU = new Chart(c2, { type:'line', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'ARPU GBP/yr', data:[1463,3750,3369,4237,4531], borderColor:C.ok+'0.9)', backgroundColor:C.ok+'0.1)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5 }] }, options: bO() });
+    }
+
+    if (pg === 'roadmap') {
+      dc('chartUsers');
+      var c = document.getElementById('chartUsers');
+      if (c) ci.chartUsers = new Chart(c, { type:'line', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'Active Users', data:[51,84,308,504,683], borderColor:C.v+'0.9)', backgroundColor:C.v+'0.1)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5, yAxisID:'y' },{ label:'Revenue GBP 000s', data:[74.66,315.01,1037.77,2135.71,3095.31], borderColor:C.t+'0.9)', backgroundColor:C.t+'0.08)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5, yAxisID:'y1' }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:true, labels:{ color:T, font:{ family:F } } }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1, padding:10 } }, scales:{ x:{ grid:{ color:G }, ticks:{ color:T, font:{ family:F, size:11 } } }, y:{ grid:{ color:G }, ticks:{ color:T, font:{ family:F, size:11 } }, position:'left' }, y1:{ grid:{ drawOnChartArea:false }, ticks:{ color:'rgba(13,148,136,.8)', font:{ family:F, size:11 } }, position:'right' } } } });
+    }
+
+    if (pg === 'financials') {
+      dc('chartPL'); dc('chartEBITDA'); dc('chartCash');
+      var c1 = document.getElementById('chartPL');
+      if (c1) ci.chartPL = new Chart(c1, { type:'bar', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'Revenue', data:[74660,315008,1037771,2135708,3095305], backgroundColor:C.v+'0.82)', borderRadius:5 },{ label:'Total Costs', data:[57564,221843,844036,1605213,2302129], backgroundColor:C.rd+'0.55)', borderRadius:5 },{ label:'Net Profit', data:[17096,93165,193735,530495,793176], backgroundColor:C.ok+'0.82)', borderRadius:5 }] }, options: bO(true) });
+      var c2 = document.getElementById('chartEBITDA');
+      if (c2) ci.chartEBITDA = new Chart(c2, { type:'line', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'EBITDA GBP', data:[22794,125720,264814,718327,1075068], borderColor:C.p+'0.9)', backgroundColor:C.p+'0.1)', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5 }] }, options: bO() });
+      var c3 = document.getElementById('chartCash');
+      if (c3) ci.chartCash = new Chart(c3, { type:'bar', data:{ labels:['End Y1','End Y2','End Y3','End Y4','End Y5'], datasets:[{ label:'Cash on Hand GBP', data:[68794,191761,428873,1083127,1970913], backgroundColor:[C.v+'0.82)',C.p+'0.82)',C.t+'0.82)',C.ok+'0.87)',C.ok+'0.92)'], borderRadius:8 }] }, options: bO() });
+    }
+
+    if (pg === 'team') {
+      dc('chartTeam');
+      var c = document.getElementById('chartTeam');
+      if (c) ci.chartTeam = new Chart(c, { type:'bar', data:{ labels:['Y1','Y2','Y3','Y4','Y5'], datasets:[{ label:'Senior Dev', data:[1,2,4,6,8], backgroundColor:C.v+'0.82)', borderRadius:4 },{ label:'AI Expert', data:[0,1,2,3,5], backgroundColor:C.p+'0.82)', borderRadius:4 },{ label:'Support', data:[0,1,5,8,14], backgroundColor:C.t+'0.82)', borderRadius:4 },{ label:'Other', data:[2,2,5,8,11], backgroundColor:C.ok+'0.82)', borderRadius:4 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:true, labels:{ color:T, font:{ family:F, size:11 } } }, tooltip:{ backgroundColor:'#160b2e', titleColor:'#e2d9f3', bodyColor:'#b8a9d9', borderColor:'rgba(139,92,246,.3)', borderWidth:1, padding:10 } }, scales:{ x:{ stacked:true, grid:{ color:G }, ticks:{ color:T, font:{ family:F, size:11 } } }, y:{ stacked:true, grid:{ color:G }, ticks:{ color:T, font:{ family:F, size:11 } } } } } });
+    }
+
+    if (pg === 'pricing') {
+      dc('chartCost');
+      var c = document.getElementById('chartCost');
+      if (c) ci.chartCost = new Chart(c, { type:'bar', data:{ labels:['Manual AI Audit/yr','External Consultants/yr','AGHub Professional/yr','AGHub Enterprise/yr'], datasets:[{ label:'Annual Cost GBP', data:[85000,120000,5988,12000], backgroundColor:[C.rd+'0.76)',C.wn+'0.76)',C.ok+'0.87)',C.v+'0.87)'], borderRadius:6 }] }, options: Object.assign({ indexAxis:'y' }, bO()) });
+    }
+
+  }, 150);
+}
+
+// INIT
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    document.querySelectorAll('#pg-overview .ain').forEach(function(el, i) {
+      setTimeout(function() { el.classList.add('v'); }, i * 90);
+    });
+    setTimeout(function() {
+      document.querySelectorAll('.pf').forEach(function(b) {
+        var w = b.style.width;
+        b.style.width = '0';
+        setTimeout(function() { b.style.width = w; }, 100);
+      });
+    }, 300);
+  }, 100);
+  drawCharts('overview');
+});
+</script>
+</body>
+</html>
